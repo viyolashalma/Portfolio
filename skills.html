@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills Page</title>
+    <style>
+         .main{
+            width: 100%;
+            background:url(bg.jpg);
+            background-position: center;
+            background-size: cover;
+            height: 100vh;
+            position: relative;
+            font-family: sans-serif;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 30px;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .skills-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Creates two columns with minimum width of 350px */
+            gap: 20px;
+            padding: 0 20px 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .skill-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .skill-box h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #007bff;
+            position: relative;
+        }
+
+        .skill-box h3::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #007bff;
+            margin-top: 5px;
+        }
+
+        .skill-box p {
+            font-size: 16px;
+            color: #555;
+            text-align: justify;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            margin-left: 20px;
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="container">
+        <h2>Skills</h2>
+        <a href="index.html" class="back-btn">Back to Home</a>
+    </div>
+    
+    <div class="skills-section">
+        <div class="skill-box">
+            <h3>HTML</h3>
+            <p>HTML (HyperText Markup Language) is the standard markup language used to create and design the structure of web pages. It defines the basic building blocks of web content and allows browsers to display text, images, forms, and other elements on the web.</p>
+        </div>
+
+        <div class="skill-box">
+            <h3>CSS</h3>
+            <p>CSS (Cascading Style Sheets) is a stylesheet language used to describe the presentation of a web page. It allows you to control the layout, colors, fonts, spacing, and overall visual appearance of HTML elements.</p>
+        </div>
+
+        <div class="skill-box">
+            <h3>JavaScript</h3>
+            <p>JavaScript is a versatile, high-level programming language that is primarily used to create interactive and dynamic content on web pages. It enables websites to go beyond static pages and become fully interactive.</p>
+        </div>
+
+        <div class="skill-box">
+            <h3>Node.js</h3>
+            <p>Node.js is an open-source, cross-platform JavaScript runtime environment that allows developers to execute JavaScript code outside of a web browser. It is commonly used to create scalable, high-performance web applications and APIs.</p>
+        </div>
+
+        <div class="skill-box">
+            <h3>React.js</h3>
+            <p>React.js is a JavaScript library for building user interfaces. It allows developers to create reusable UI components, manage state efficiently, and render components dynamically based on user interaction.</p>
+        </div>
+
+        <div class="skill-box">
+            <h3>Python</h3>
+            <p>Python is an interpreted, object-oriented, high-level programming language with dynamic semantics developed by Guido van Rossum. It is designed to be easy to understand and fun to use.</p>
+        </div>
+
+        <div class="skill-box">
+            <h3>C++</h3>
+            <p>C++ is an object-oriented programming (OOP) language that is widely used for creating large-scale applications. It is a superset of the C language, providing better tools for system-level programming.</p>
+        </div>
+
+        <div class="skill-box">
+            <h3>MySQL</h3>
+            <p>MySQL is the world’s most popular open-source database. It powers many of the most accessed applications, including Facebook, Twitter, Netflix, Uber, Airbnb, and more.</p>
+        </div>
+
+        <div class="skill-box">
+            <h3>MongoDB</h3>
+            <p>MongoDB is a NoSQL database that utilizes JSON-like documents with optional schemas. It is highly scalable and is used in modern applications where flexibility in database structure is required.</p>
+        </div>
+
+        <div class="skill-box">
+            <h3>C</h3>
+            <p>The C programming language is a general-purpose language that supports structured programming and provides low-level access to memory, making it ideal for system-level programming.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
