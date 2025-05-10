@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Posters</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ffe5b4, #ffcc99);
+      color: #333;
+      
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #fff8f0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #d35400;
+      text-align: center;
+    }
+
+    .poster-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 40px;
+    }
+
+    .poster-card {
+      background-color: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .poster-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .poster-card img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+
+
+    .poster-info {
+      padding: 20px;
+    }
+
+    .poster-info h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: #e67e22;
+    }
+
+    .poster-info p {
+      font-size: 0.95rem;
+      color: #666;
+      text-align: justify;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #fffaf2;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    button, .project-link, .back-btn {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            text-decoration: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .project-link {
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            display: inline-block;
+        }
+
+        button:hover, .project-link:hover, .back-btn:hover {
+            background-color: #555;
+        }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>My Creative Posters</h1>
+    <p>Explore some of my best graphic designs and promotions</p>
+  </header>
+
+  <section class="poster-gallery">
+    <!-- Poster 1 -->
+    <div class="poster-card">
+      <img src="posterpizza.png"  alt="Pizza Poster">
+      <div class="poster-info">
+        <h3>Craving Something Special? Try Our Tomato Version Pizza! 🍕🍅</h3>
+        <p>This vibrant and appetizing poster showcases our Special Pizza – Tomato Version, loaded with colorful toppings and fresh ingredients. Designed on a rich orange backdrop, it highlights the mouth-watering combination of tomatoes, herbs, peppers, and cheese that make this pizza irresistible. The playful yet bold visuals, paired with a tempting “Hurry Up, Order Now” call-to-action and Free Delivery badge, make it a perfect marketing tool for restaurants, food delivery apps, or pizza promotions. Grab a slice of flavor — satisfaction guaranteed!</p>
+      </div>
+    </div>
+
+    <!-- Poster 2 -->
+    <div class="poster-card">
+      <img src="hiring (1).png" alt="Poster 2">
+      <div class="poster-info">
+        <h3>We’re Hiring – Join Our Growing Team! 🚀</h3>
+        <p>This dynamic hiring poster boldly announces an exciting opportunity for aspiring marketing professionals. With vibrant colors and eye-catching graphics, it effectively promotes a vacancy for Marketing Agents offering a salary range of 2K–4K. The bold “WE ARE HIRING” headline and urgent call-to-action “APPLY NOW – HURRY UP!” are designed to capture attention instantly. Perfect for social media, bulletin boards, or website banners, this poster drives immediate interest and encourages potential candidates</p>
+      </div>
+    </div>
+
+    <!-- Poster 3 -->
+    <div class="poster-card">
+      <img src="apple juice (poster).png" alt="Poster 3">
+      <div class="poster-info">
+        <h3>Refreshing & Delicious – Special Apple Juice! 🍎✨</h3>
+        <p>Introducing our Special Apple Juice, a perfect blend of taste and wellness! This beautifully crafted poster showcases a glass of golden apple juice garnished with a fresh apple slice and mint, surrounded by vibrant red apples that highlight its natural origin. The rich, deep red background with a sparkling effect adds a festive, inviting touch — making it ideal for promotions, cafes, juice bars, or wellness brands.</p>
+      </div>
+    </div>
+
+    <div class="poster-card">
+      <img src="Black Friday.png" alt="Poster 4">
+      <div class="poster-info">
+        <h3>Diwali, the Festival of Lights✨</h3>
+        <p>Diwali, the Festival of Lights, symbolizes the triumph of light over darkness and good over evil. Celebrated with vibrant rangoli designs, sparkling diyas, and joyful gatherings, it brings families and communities together in a spirit of hope and renewal. This artwork captures the essence of Diwali with traditional motifs, warm lighting, and festive decor to reflect the cultural richness and joyous atmosphere of the occasion.</p>
+      </div>
+    </div>
+
+    <div class="poster-card">
+      <img src="Happy Diwali Diwali.png" alt="Poster 5">
+      <div class="poster-info">
+        <h3>Black Friday Sale Campaign Design✨</h3>
+        <p>Designed a high-impact marketing campaign for Black Friday, focusing on customer engagement and conversion. The campaign included visually compelling banners, promotional graphics, and targeted messaging optimized for both web and mobile platforms. Emphasized urgency and exclusivity to drive traffic and increase sales during the peak shopping season.</p>
+      </div>
+    </div>
+
+    <div class="poster-card">
+      <img src="2025.png" alt="Poster 6">
+      <div class="poster-info">
+        <h3>Holi, the Festival of Colors✨</h3>
+        <p>Holi, the Festival of Colors, is a vibrant celebration of joy, unity, and the arrival of spring. Marked by the playful throwing of colored powders, music, and dance, Holi symbolizes the triumph of love and goodness over negativity. This design captures the energy and excitement of the festival through bold hues and festive motifs, reflecting the dynamic spirit of one of India's most joyous cultural traditions.</p>
+      </div>
+    </div>
+    
+    <div class="poster-card">
+      <img src="Merry Christmas.png" alt="Poster 7">
+      <div class="poster-info">
+        <h3>Christmas✨</h3>
+        <p>Christmas, a season of joy, warmth, and togetherness, brings people around the world together in celebration. With festive lights, cheerful decorations, and the spirit of giving, it’s a time to share love and create lasting memories. This design reflects the festive charm of Christmas through golden ornaments, playful characters, and a vibrant holiday atmosphere, capturing the magic of this beloved tradition.</p>
+      </div>
+    </div>
+
+    <div class="poster-card">
+      <img src="Untitled design.jpg" alt="Poster 8">
+      <div class="poster-info">
+        <h3>Birthday Celebration Design✨</h3>
+        <p>Created a vibrant and joyful design theme for a birthday celebration, incorporating playful colors, festive elements, and personalized touches. The project included invitation cards, digital banners, and social media visuals that captured the spirit of celebration and enhanced the overall event experience.
+        </p>
+      </div>
+    </div>
+
+
+  </section>
+
+  <footer>
+    <a href="index.html" class="back-button">Back to Home</a>
+  </footer>
+
+</body>
+</html>
