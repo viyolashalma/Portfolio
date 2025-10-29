@@ -1,189 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Posters</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Creative Posters • Viyola Shalma Monteiro</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #ffe5b4, #ffcc99);
-      color: #333;
-      
+    :root{
+      --ink:#0f2547;
+      --muted:#5c6c82;
+      --bg1:#eef5ff;
+      --bg2:#dfeafe;
+      --card:#ffffff;
+      --line:#e6eef9;
+      --accent:#2e63ff;
+      --accent-2:#72b7ff;
+      --shadow:0 16px 40px rgba(20,40,80,.12);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;padding:0;
+      font:16px/1.55 "Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+    }
+    a{color:inherit;text-decoration:none}
+
+    header{
+      text-align:center;
+      padding:56px 20px 32px;
+    }
+    header h1{margin:0 0 8px;font-size:clamp(28px,5vw,42px);color:var(--accent)}
+    header p{margin:0;color:#4b72c9}
+
+    .gallery{
+      max-width:1180px;margin:0 auto; padding:0 20px 72px;
+      display:grid;gap:26px;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     }
 
-    header {
-      text-align: center;
-      padding: 40px 20px;
-      background-color: #fff8f0;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    .card{
+      background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+      overflow:hidden; box-shadow:var(--shadow);
+      transition:transform .25s ease, box-shadow .25s ease;
+      display:flex; flex-direction:column;
+    }
+    .card:hover{ transform:translateY(-6px); box-shadow:0 24px 48px rgba(20,40,80,.2) }
+
+    .media{ position:relative; overflow:hidden; background:#fff; }
+    .media img{
+      display:block; width:100%; height:260px; object-fit:cover;
+      transition:transform .5s ease; user-select:none; -webkit-user-drag:none;
+    }
+    .card:hover .media img{ transform:scale(1.03) }
+
+    .peek{
+      position:absolute; right:12px; bottom:12px;
+      background:rgba(10,35,80,.55); color:#fff;
+      padding:6px 12px; border-radius:999px; font-size:12px; letter-spacing:.2px;
+      backdrop-filter:saturate(140%) blur(2px);
     }
 
-    header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      color: #d35400;
-      text-align: center;
+    .body{padding:18px 16px 20px}
+    .body h3{margin:0 0 8px; font-size:1.05rem; color:var(--accent)}
+    .body p{margin:0; color:var(--muted); font-size:.97rem; text-align:justify}
+
+    footer{padding:28px 20px 40px; text-align:center}
+    .back{
+      display:inline-block; padding:12px 26px; border-radius:999px; font-weight:700;
+      color:#fff; background:linear-gradient(120deg,var(--accent),var(--accent-2));
+      box-shadow:0 14px 30px rgba(46,99,255,.25); border:none;
+      transition:transform .15s ease, box-shadow .15s ease;
     }
+    .back:hover{ transform:translateY(-2px); box-shadow:0 20px 44px rgba(46,99,255,.35) }
 
-    .poster-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      padding: 40px;
+    /* Floating Back button (always available) */
+    .back-fab{
+      position:fixed; right:22px; bottom:22px; z-index:60;
+      padding:12px 18px; border-radius:999px; font-weight:700;
+      color:#fff; background:linear-gradient(120deg,var(--accent),var(--accent-2));
+      border:none; box-shadow:0 14px 36px rgba(46,99,255,.35);
+      display:flex; align-items:center; gap:10px; cursor:pointer;
     }
+    .back-fab:focus{ outline:3px solid rgba(114,183,255,.6) }
+    .back-fab:hover{ transform:translateY(-2px) }
 
-    .poster-card {
-      background-color: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
+    /* Lightbox */
+    .lightbox{
+      position:fixed; inset:0; background:rgba(8,20,40,.7);
+      display:none; align-items:center; justify-content:center; z-index:50;
+      backdrop-filter: blur(2px);
     }
-
-    .poster-card:hover {
-      transform: translateY(-8px);
+    .lightbox.open{ display:flex }
+    .lightbox-inner{
+      position:relative; max-width:min(92vw,1100px); max-height:86vh; background:#0c1a33; border-radius:12px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.5);
+      border:1px solid rgba(114,183,255,.25);
     }
-
-    .poster-card img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        display: block;
+    .lightbox img{
+      display:block; max-width:100%; max-height:86vh; object-fit:contain; background:#0c1a33;
+      user-select:none; -webkit-user-drag:none;
     }
-
-
-    .poster-info {
-      padding: 20px;
+    .lb-close,.lb-prev,.lb-next{
+      position:absolute; top:50%; transform:translateY(-50%);
+      background:rgba(255,255,255,.16); color:#fff; border:none; width:44px; height:44px;
+      border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      backdrop-filter: blur(2px); transition:background .2s ease;
     }
+    .lb-close{ top:12px; right:12px; transform:none; width:40px; height:40px }
+    .lb-prev{ left:10px } .lb-next{ right:10px }
+    .lb-prev:hover,.lb-next:hover,.lb-close:hover{ background:rgba(255,255,255,.28) }
 
-    .poster-info h3 {
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-      color: #e67e22;
+    @media (max-width:700px){
+      .media img{ height:220px }
+      .lb-prev,.lb-next{ display:none }
     }
-
-    .poster-info p {
-      font-size: 0.95rem;
-      color: #666;
-      text-align: justify;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #fffaf2;
-      font-size: 0.9rem;
-      color: #888;
-    }
-
-    button, .project-link, .back-btn {
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            text-decoration: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .project-link {
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .back-btn {
-            margin-top: 30px;
-            display: inline-block;
-        }
-
-        button:hover, .project-link:hover, .back-btn:hover {
-            background-color: #555;
-        }
   </style>
 </head>
 <body>
 
   <header>
     <h1>My Creative Posters</h1>
-    <p>Explore some of my best graphic designs and promotions</p>
+    <p>Browse a selection of my graphic design & promotional artwork</p>
   </header>
 
-  <section class="poster-gallery">
+  <main class="gallery" id="gallery">
+
     <!-- Poster 1 -->
-    <div class="poster-card">
-      <img src="posterpizza.png"  alt="Pizza Poster">
-      <div class="poster-info">
+    <article class="card">
+      <a class="media" href="posterpizza.png" data-title="Craving Something Special? Try Our Tomato Version Pizza!">
+        <img src="posterpizza.png" alt="Tomato special pizza promotional poster" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
         <h3>Craving Something Special? Try Our Tomato Version Pizza! 🍕🍅</h3>
-        <p>This vibrant and appetizing poster showcases our Special Pizza – Tomato Version, loaded with colorful toppings and fresh ingredients. Designed on a rich orange backdrop, it highlights the mouth-watering combination of tomatoes, herbs, peppers, and cheese that make this pizza irresistible. The playful yet bold visuals, paired with a tempting “Hurry Up, Order Now” call-to-action and Free Delivery badge, make it a perfect marketing tool for restaurants, food delivery apps, or pizza promotions. Grab a slice of flavor — satisfaction guaranteed!</p>
+        <p>Vibrant, appetite-teasing creative with warm tones and a strong call-to-action—great for restaurants and delivery promos.</p>
       </div>
-    </div>
+    </article>
 
-    <!-- Poster 2 -->
-    <div class="poster-card">
-      <img src="hiring (1).png" alt="Poster 2">
-      <div class="poster-info">
-        <h3>We’re Hiring – Join Our Growing Team! 🚀</h3>
-        <p>This dynamic hiring poster boldly announces an exciting opportunity for aspiring marketing professionals. With vibrant colors and eye-catching graphics, it effectively promotes a vacancy for Marketing Agents offering a salary range of 2K–4K. The bold “WE ARE HIRING” headline and urgent call-to-action “APPLY NOW – HURRY UP!” are designed to capture attention instantly. Perfect for social media, bulletin boards, or website banners, this poster drives immediate interest and encourages potential candidates</p>
+     <!-- Poster 2 -->  
+    <article class="card">
+    <a class="media" href="Letter T (1).png" data-title="Z for Zebra">
+      <img src="Letter T (1).png" alt="Stylized letter Z featuring a zebra emerging from it" loading="lazy" oncontextmenu="return false">
+      <span class="peek">View</span>
+      <!-- <div class="title-badge">Z for Zebra</div> -->
+    </a>
+    <div class="body">
+      <h3>Z for Zebra 🦓</h3>
+      <p>Where the alphabet meets the savanna — bold stripes, clean lines, and natural grace in perfect balance.</p>
+    </div>
+  </article>
+
+  <!-- Poster 3 --> 
+          <article class="card">
+      <a class="media" href="ButterFly Poster.jpg" data-title="Butterfly Poster">
+        <img src="ButterFly Poster.jpg" alt="Artistic butterfly poster over calm reflective water" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>Butterfly Poster 🦋</h3>
+        <p>Wings of emerald over whispers of water — a study in grace, freedom, and the gentle power of transformation.</p>
       </div>
-    </div>
+    </article>
 
-    <!-- Poster 3 -->
-    <div class="poster-card">
-      <img src="apple juice (poster).png" alt="Poster 3">
-      <div class="poster-info">
+    <!-- Poster 4 --> 
+      <article class="card">
+      <a class="media" href="Magic_Expand.png" data-title="New Year Fashion">
+        <img src="Magic_Expand.png" alt="New Year Fashion poster" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>New Year Fashion ✨</h3>
+        <p>Bold creativity meets timeless beauty — this expanded poster captures the elegance of modern style for a confident new year. <br>
+        <em>“New year, new style, same confidence.”</em></p>
+      </div>
+    </article>
+
+
+    <!-- Poster 5 -->
+    <article class="card">
+      <a class="media" href="hiring (1).png" data-title="We’re Hiring – Join Our Growing Team!">
+        <img src="hiring (1).png" alt="We are hiring poster for marketing agents" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>We’re Hiring – Join Our Team 💼!</h3>
+        <p>Eye-catching hierarchy and urgency cues to drive applications across social feeds and print placements.</p>
+      </div>
+    </article>
+
+      <article class="card">
+    <a class="media" href="Invitation .png" data-title="Invitation Poster">
+      <img src="Invitation .png" alt="Elegant invitation poster with floral accents and soft tones" loading="lazy" oncontextmenu="return false">
+      <span class="peek">View</span>
+    </a>
+    <div class="body">
+      <h3>Invitation Poster 💌</h3>
+      <p>With hearts full of love and joy,  
+      we invite you to join us in celebrating a beautiful new beginning.  
+      Your presence will make our day truly special.</p>
+    </div>
+  </article>
+
+    <!-- Poster 6 -->
+    <article class="card">
+      <a class="media" href="apple juice (poster).png" data-title="Refreshing & Delicious – Special Apple Juice!">
+        <img src="apple juice (poster).png" alt="Apple juice product poster" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
         <h3>Refreshing & Delicious – Special Apple Juice! 🍎✨</h3>
-        <p>Introducing our Special Apple Juice, a perfect blend of taste and wellness! This beautifully crafted poster showcases a glass of golden apple juice garnished with a fresh apple slice and mint, surrounded by vibrant red apples that highlight its natural origin. The rich, deep red background with a sparkling effect adds a festive, inviting touch — making it ideal for promotions, cafes, juice bars, or wellness brands.</p>
+        <p>Product-first composition with rich tones—ideal for cafés, juice bars, and retail launches.</p>
       </div>
-    </div>
+    </article>
 
-    <div class="poster-card">
-      <img src="Black Friday.png" alt="Poster 4">
-      <div class="poster-info">
-        <h3>Black Friday Sale Campaign Design✨</h3>
-        <p>Designed a high-impact marketing campaign for Black Friday, focusing on customer engagement and conversion. The campaign included visually compelling banners, promotional graphics, and targeted messaging optimized for both web and mobile platforms. Emphasized urgency and exclusivity to drive traffic and increase sales during the peak shopping season.</p>
+    <!-- Poster 7 -->
+    <article class="card">
+      <a class="media" href="Black Friday.png" data-title="Black Friday Sale Campaign">
+        <img src="Black Friday.png" alt="Black Friday sale campaign banner" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>Black Friday Sale Campaign 🔥</h3>
+        <p>Conversion-oriented visuals emphasizing urgency and exclusivity for web & mobile campaigns.</p>
       </div>
-    </div>
+    </article>
 
-    <div class="poster-card">
-      <img src="Happy Diwali Diwali.png" alt="Poster 5">
-      <div class="poster-info">
-        <h3>Diwali, the Festival of Lights✨</h3>
-        <p>Diwali, the Festival of Lights, symbolizes the triumph of light over darkness and good over evil. Celebrated with vibrant rangoli designs, sparkling diyas, and joyful gatherings, it brings families and communities together in a spirit of hope and renewal. This artwork captures the essence of Diwali with traditional motifs, warm lighting, and festive decor to reflect the cultural richness and joyous atmosphere of the occasion.</p>
+<!-- Poster 8 --> 
+      <article class="card">
+      <a class="media" href="FOOT BALL.png" data-title="Football Fever">
+        <img src="FOOT BALL.png" alt="Dynamic football poster with energy and motion" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>Football Fever ⚽</h3>
+        <p>Green fields, golden goals, and the heartbeat of the crowd — where passion meets precision and every kick writes history.</p>
       </div>
-    </div>
+    </article>
 
-    <div class="poster-card">
-      <img src="2025.png" alt="Poster 6">
-      <div class="poster-info">
-        <h3>Holi, the Festival of Colors✨</h3>
-        <p>Holi, the Festival of Colors, is a vibrant celebration of joy, unity, and the arrival of spring. Marked by the playful throwing of colored powders, music, and dance, Holi symbolizes the triumph of love and goodness over negativity. This design captures the energy and excitement of the festival through bold hues and festive motifs, reflecting the dynamic spirit of one of India's most joyous cultural traditions.</p>
+            <!-- Poster 9 -->
+      <article class="card">
+        <a class="media" href="LetterS (1).png" data-title="Letter S – 3D Poster">
+          <img src="LetterS (1).png" alt="3D letter S design poster" loading="lazy" oncontextmenu="return false">
+          <span class="peek">View</span>
+        </a>
+        <div class="body">
+          <h3>Letter S – 3D Poster 🌀</h3>
+          <p>Bold form, sculpted depth — the letter S stands tall in dimension and grace.  
+          A balance of shadow and shine that captures timeless design energy.</p>
+        </div>
+      </article>
+
+      <!-- Poster 10 --> 
+     <article class="card">
+      <a class="media" href="Blend_Image (2).png" data-title="Blend Image – Nature and Identity Merged">
+        <img src="Blend_Image (2).png" alt="Blend image showing a silhouette merging with a tree and sky" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>Blend Image 🌿</h3>
+        <p>A poetic fusion of portrait and landscape — where identity meets nature. The soaring birds and grounded tree speak of freedom and rooted strength alike.</p>
       </div>
-    </div>
-    
-    <div class="poster-card">
-      <img src="Merry Christmas.png" alt="Poster 7">
-      <div class="poster-info">
-        <h3>Christmas✨</h3>
-        <p>Christmas, a season of joy, warmth, and togetherness, brings people around the world together in celebration. With festive lights, cheerful decorations, and the spirit of giving, it’s a time to share love and create lasting memories. This design reflects the festive charm of Christmas through golden ornaments, playful characters, and a vibrant holiday atmosphere, capturing the magic of this beloved tradition.</p>
+    </article>
+
+  
+    <!-- Poster 11 -->
+    <article class="card">
+      <a class="media" href="Happy Diwali Diwali.png" data-title="Diwali — The Festival of Lights">
+        <img src="Happy Diwali Diwali.png" alt="Diwali festival greeting poster" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>Diwali, the Festival of Lights ✨</h3>
+        <p>Warm lighting, rangoli motifs, and festive balance to capture the spirit of family and celebration.</p>
       </div>
-    </div>
+    </article>
 
-    <div class="poster-card">
-      <img src="Untitled design.jpg" alt="Poster 8">
-      <div class="poster-info">
-        <h3>Birthday Celebration Design✨</h3>
-        <p>Created a vibrant and joyful design theme for a birthday celebration, incorporating playful colors, festive elements, and personalized touches. The project included invitation cards, digital banners, and social media visuals that captured the spirit of celebration and enhanced the overall event experience.
-        </p>
+       <article class="card">
+      <a class="media" href="Mangalore(Poster).png" data-title="Mangalore – Architectural Grandeur">
+        <img src="Mangalore(Poster).png" alt="Mangalore poster featuring Taj Mahal style monument" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>MANGALORE 🕌</h3>
+        <p>An ode to timeless architecture — reflecting both grandeur and serenity. The mirrored monument stands proud, capturing the spirit of elegance in every curve.</p>
       </div>
+    </article>
+
+    <!-- Poster 12 -->
+    <article class="card">
+      <a class="media" href="2025.png" data-title="Holi — Festival of Colors">
+        <img src="2025.png" alt="Holi festival color splash poster" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>Holi, the Festival of Colors 🌈</h3>
+        <p>Bold hues and dynamic forms mirror the energy of spring and togetherness.</p>
+      </div>
+    </article>
+
+    <!-- Poster 13 -->
+    <article class="card">
+      <a class="media" href="Merry Christmas.png" data-title="Merry Christmas">
+        <img src="Merry Christmas.png" alt="Christmas holiday poster with ornaments and characters" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>Christmas, the Season of Joy 🎄</h3>
+        <p>Festive golds and cozy composition—perfect for seasonal greetings and retail promos.</p>
+      </div>
+    </article>
+
+    <!-- Poster 14 -->
+    <article class="card">
+      <a class="media" href="Untitled design.jpg" data-title="Birthday Celebration Design">
+        <img src="Untitled design.jpg" alt="Birthday celebration graphic design poster" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+      </a>
+      <div class="body">
+        <h3>Birthday Celebration 🎂🎉</h3>
+        <p>Cheerful, modular visuals for invites and social posts—easy to adapt for any event.</p>
+      </div>
+    </article>
+
+    <!-- Poster 15 --> 
+        <article class="card">
+      <a class="media" href="Alone Girl Blend Image Background(1).png" data-title="Forest Flight">
+        <img src="Alone Girl Blend Image Background(1).png" alt="Silhouette of a person with trees and flying birds" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+        <!-- <div class="title-badge">Forest Flight</div> -->
+      </a>
+      <div class="body">
+        <h3>Forest Flight 🌿</h3>
+        <p>A silhouette rooted in the woods, yet dreaming skyward with the birds. A quiet hymn of nature, freedom, and thought.</p>
+      </div>
+    </article>
+
+<!-- Poster 16 --> 
+        <article class="card">
+      <a class="media" href="Magic_Expand(Fruits).png" data-title="Magic_Expand (Fruits)">
+        <img src="Magic_Expand(Fruits).png" alt="Fruit basket bursting with color and freshness" loading="lazy" oncontextmenu="return false">
+        <span class="peek">View</span>
+        <!-- <div class="title-badge">Magic_Expand (Fruits)</div> -->
+      </a>
+      <div class="body">
+        <h3>Basket of Fruits with Magic_Expand 🍇</h3>
+        <p>Freshness never fades — it evolves. A celebration of color, vitality, and natural elegance in every frame.</p>
+      </div>
+    </article>
+
+
+  </main>
+
+  <!-- <footer>
+    <a class="back" href="index.html" aria-label="Back to Home">Back to Home</a>
+  </footer> -->
+
+  <!-- Floating Back Button -->
+  <a class="back-fab" href="index.html" aria-label="Back to Home">
+    ← Back
+  </a>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-inner">
+      <button class="lb-close" aria-label="Close" title="Close" id="lbClose">✕</button>
+      <button class="lb-prev" aria-label="Previous" title="Previous" id="lbPrev">❮</button>
+      <img id="lbImg" alt="">
+      <button class="lb-next" aria-label="Next" title="Next" id="lbNext">❯</button>
     </div>
+  </div>
 
+  <script>
+    // Collect poster anchors
+    const links = Array.from(document.querySelectorAll('.gallery .media'));
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbPrev = document.getElementById('lbPrev');
+    const lbNext = document.getElementById('lbNext');
+    const lbClose = document.getElementById('lbClose');
 
-  </section>
+    let idx = -1;
 
-  <footer>
-    <a href="index.html" class="back-button">Back to Home</a>
-  </footer>
+    function openLB(i){
+      idx = i;
+      const a = links[idx];
+      lbImg.src = a.getAttribute('href');
+      lbImg.alt = a.getAttribute('data-title') || 'Poster';
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLB(){
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden','true');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+    function prev(){ idx = (idx > 0) ? idx - 1 : links.length - 1; openLB(idx); }
+    function next(){ idx = (idx < links.length - 1) ? idx + 1 : 0; openLB(idx); }
 
+    links.forEach((a,i)=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        openLB(i);
+      });
+      // light deterrents
+      a.addEventListener('contextmenu', e=> e.preventDefault());
+      a.addEventListener('dragstart', e=> e.preventDefault());
+    });
+
+    lbPrev.addEventListener('click', ()=> prev());
+    lbNext.addEventListener('click', ()=> next());
+    lbClose.addEventListener('click', ()=> closeLB());
+    lb.addEventListener('click', e=>{ if(e.target===lb) closeLB(); });
+
+    window.addEventListener('keydown', e=>{
+      if(!lb.classList.contains('open')) return;
+      if(e.key==='Escape') closeLB();
+      if(e.key==='ArrowLeft') prev();
+      if(e.key==='ArrowRight') next();
+    });
+  </script>
 </body>
 </html>

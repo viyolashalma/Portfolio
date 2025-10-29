@@ -1,165 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biodata Page</title>
-    <style>
-         .main{
-            width: 100%;
-            background:url(bg.jpg);
-            background-position: center;
-            background-size: cover;
-            height: 100vh;
-            position: relative;
-            font-family: sans-serif;
-        }
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Biodata</title>
+  <style>
+    :root{
+      --ink:#0b1e33; --muted:#5b6a80; --bg:#eef4ff;
+      --card:#ffffff; --line:#e6eef9; --accent:#2e63ff; --accent-2:#72b7ff;
+      --shadow:0 14px 40px rgba(20,40,80,.12); --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+      font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+    a{color:#1e4edd;text-decoration:none}
+    a:hover{text-decoration:underline}
 
-        .container {
-            width: 80%;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-        }
+    .main{min-height:100vh;background:
+      radial-gradient(1200px 600px at 90% -10%, rgba(46,99,255,.12), transparent 60%),
+      url('bg.jpg') center/cover no-repeat fixed;padding:28px;}
 
-        h1 {
-            text-align: center;
-            font-size: 28px;
-            color: #333;
-        }
+    .wrap{max-width:1050px;margin:0 auto;background:rgba(255,255,255,.8);
+      backdrop-filter:saturate(140%) blur(6px);border:1px solid var(--line);
+      border-radius:24px;box-shadow:var(--shadow);overflow:hidden;}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 18px;
-        }
+    .hero{background:linear-gradient(135deg, #0f2746, #0b1e33);color:#fff;
+      padding:28px 28px 22px;}
+    .title{font-size:clamp(26px,3.5vw,34px);margin:0 0 6px}
+    .subtitle{margin:0;color:#cfe2ff}
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .chip{background:rgba(255,255,255,.12);color:#e9f2ff;border:1px solid rgba(255,255,255,.25);
+      padding:6px 12px;border-radius:999px;font-weight:600;font-size:14px}
 
-        table, th, td {
-            border: 1px solid #ccc;
-        }
+    .content{padding:26px}
+    .grid{display:grid;gap:20px;grid-template-columns:1.2fr 1fr}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
 
-        th, td {
-            padding: 15px;
-            text-align: left;
-        }
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:20px;}
+    .card h2{margin:0 0 12px}
+    .card p{margin:0;text-align:justify}
 
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
+    .defs{display:grid;grid-template-columns:180px 1fr;gap:10px 16px;align-items:start}
+    .defs dt{color:#35507b;font-weight:700}
+    .defs dd{margin:0;color:var(--muted)}
+    @media(max-width:600px){.defs{grid-template-columns:1fr}.defs dt{margin-top:12px}}
 
-        @media (max-width: 600px) {
-            table {
-                font-size: 16px;
-            }
-        }
-        button, .project-link, .back-btn {
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            text-decoration: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+    .tags{display:flex;flex-wrap:wrap;gap:10px}
+    .tag{background:#eef4ff;border:1px solid #dbe7ff;color:#274578;
+      padding:8px 12px;border-radius:999px;font-weight:600}
 
-        .project-link {
-            display: inline-block;
-            margin-top: 10px;
-        }
+    /* Floating Back Button */
+    .float-back{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: linear-gradient(120deg,var(--accent),var(--accent-2));
+      color: #fff;
+      padding: 14px 24px;
+      font-weight: 700;
+      border-radius: 999px;
+      box-shadow: 0 10px 25px rgba(46,99,255,0.35);
+      text-decoration: none;
+      transition: all .3s ease;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .float-back:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 14px 35px rgba(46,99,255,0.5);
+    }
 
-        .back-btn {
-            margin-top: 30px;
-            display: inline-block;
-        }
-
-        button:hover, .project-link:hover, .back-btn:hover {
-            background-color: #555;
-        }
-    </style>
+    /* Remove underline globally from Back button */
+    .float-back,
+    .float-back:hover,
+    .float-back:focus,
+    .float-back * {
+      text-decoration: none !important;
+    }
+  </style>
 </head>
 <body>
-    <div class="main">
-    
-    <div class="container">
-        <h1>Profile Summary</h1>
-        <table>
-            <tr>
-                <th>Name</th>
-                <td>Viyola Shalma Monteiro</td>
-            </tr>
-            <tr>
-                <th>Date of Birth</th>
-                <td>03-12-2001</td>
-            </tr>
+  <div class="main">
+    <div class="wrap">
+      <header class="hero">
+        <h1 class="title">Viyola Shalma Monteiro</h1>
+        <p class="subtitle">Junior Software Developer</p>
+        <div class="chips">
+          <span class="chip">AI & Web Systems</span>
+          <span class="chip">Master's</span>
+          <span class="chip">Bachelor's</span>
+        </div>
+      </header>
 
-            <tr>
-                <th>Post Graduate</th>
-                <td>
-                    MCA (Master's in Computer Application)<br>
-                    St. Aloysius College (Autonomous) Institute of Management and IT, Mangaluru<br>
-                    CGPA: 8.45 (2022-2024)
-                </td>
-            </tr>
-            <tr>
-                <th>Under Graduate</th>
-                <td>
-                    BCA (Bachelor of Computer Application)<br>
-                    Kanachur Institute of Management and Science, Deralakatte, Mangaluru<br>
-                    CGPA: 8.65 (2019-2022)
-                </td>
-            </tr>
-            <tr>
-                <th>Hobbies</th>
-                <td>Photography, Cooking, Crafting, Gardening</td>
-            </tr>
-            <tr>
-                <th>Contact</th>
-                <td>+971542975600</td>
-            </tr>
-            
-            <tr>
-                <th>Email ID</th>
-                <td>viyolamonteiro@gmail.com</td>
-            </tr>
+      <section class="content">
+        <div class="grid">
 
-            <tr>
-                <th>GitHub</th>
-                <td><a href="https://viyolashalma.github.io/Portfolio/">https://github.com/viyolashalma/</a></td>
-            </tr>
+          <article class="card">
+            <h2>Profile Summary</h2>
+            <p>
+              I am a dedicated Computer Applications professional with a strong foundation in web development, software engineering, and technical education. 
+              My focus is on building applications that are clean, reliable, and easy to maintain — where every feature serves a clear purpose. 
+              I work confidently with technologies like React.js, Node.js, and MySQL to create digital solutions that are both efficient and visually balanced. 
+              Beyond coding, I value the process of teaching and mentoring, helping others understand how creativity and logic can coexist in technology. 
+              Each project I take on is an opportunity to learn, refine, and contribute to something lasting — software that solves real problems and stands the test of time.
+            </p>
+          </article>
 
-            <tr>
-                <th>LinkedIn</th>
-                <td><a href="https://www.linkedin.com/in/viyola-monteiro-7a473129a?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BdOUoCOT0TVWJSMqZLo6DGw%3D%3D">Viyola Monteiro LinkedIn</a></td>
-            </tr>
+          <aside class="card">
+            <h2>Quick Details</h2>
+            <dl class="defs">
+              <dt>Date of Birth</dt><dd>03-12-2001</dd>
+              <dt>Nationality</dt><dd>Indian</dd>
+              <dt>Location</dt><dd>Dubai, UAE (Near Abu Hail Metro Station)</dd>
+              <dt>Contact</dt><dd><a href="tel:+971542975600">+971 54 297 5600</a></dd>
+              <dt>Email</dt><dd><a href="mailto:viyolamonteiro@gmail.com">viyolamonteiro@gmail.com</a></dd>
+              <dt>GitHub</dt><dd><a href="https://github.com/viyolashalma">github.com/viyolashalma</a></dd>
+            </dl>
+          </aside>
 
-            <tr>
-                <th>Project Tittle </th>
-                <td>Process Monitoring System , Web-Base Application , Python Django Ecommerce , Web development </td>
-            </tr>
+          <section class="card" style="grid-column:1 / -1">
+            <h2>Work Experience</h2>
+            <p>
+              <strong>Computer Application Teacher</strong> — Artin Education Institute, Dubai (May 2025 – Present)<br>
+              Conducted engaging classes on Artificial Intelligence and programming, integrating tools like Canva,
+              Photopea, Python, and React.js to enhance students’ creative learning and technical literacy.
+            </p>
+          </section>
 
-            <tr>
-                <th>Skills</th>
-                <td>Software Developer and Full Stack Developer</td>
-            </tr>
+          <section class="card" style="grid-column:1 / -1">
+            <h2>Projects</h2>
+            <div class="tags">
+              <span class="tag">Process Monitoring System – Node.js, React.js, MySQL</span>
+              <span class="tag">PHP-Based Web Application – HTML, CSS, JS, MySQL</span>
+              <span class="tag">Python Django E-commerce</span>
+              <span class="tag">Green Sip Logo Design (Brand Identity)</span>
+            </div>
+          </section>
 
-            <tr>
-                <th>Language Known</th>
-                <td>English,  Hindi, Kannada, Konkani</td>
-            </tr>
+          <section class="card">
+            <h2>Certificates & Training</h2>
+            <ul>
+              <li>Diploma in Professional Logo Design — Alison (Apr 2025)</li>
+              <li>Agile Scrum Master Certification — March 2025</li>
+              <li>Python Django Advanced Web App — Udemy (March 2024)</li>
+              <li>MySQL & Database Testing — Oct 2023</li>
+              <li>AWS Certified — 2022</li>
+            </ul>
+          </section>
 
-        </table><a href="index.html" class="back-btn">Back to Home</a>
+          <section class="card">
+            <h2>Research Publication</h2>
+            <p>
+              <strong>“Predicting the Future Education System: A Comparative Analysis of Past, Present and Future Trends”</strong><br>
+              Published Jan 2024 — Focused on AI, VR, blended learning, and lifelong education in modern systems.
+            </p>
+          </section>
+
+          <section class="card">
+            <h2>Skills</h2>
+            <div class="tags">
+              <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">Bootstrap</span>
+              <span class="tag">Java</span><span class="tag">Python</span><span class="tag">C++</span>
+              <span class="tag">React.js</span><span class="tag">Node.js</span><span class="tag">MySQL</span>
+              <span class="tag">AWS</span><span class="tag">Photopea</span>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2>Languages Known</h2>
+            <div class="tags">
+              <span class="tag">English</span><span class="tag">Hindi</span>
+              <span class="tag">Kannada</span><span class="tag">Konkani</span><span class="tag">Tulu</span>
+            </div>
+          </section>
+
+        </div>
+      </section>
     </div>
-    
-</div>
+  </div>
+
+  <!-- Floating Back Button -->
+  <a href="index.html" class="float-back">← Back</a>
+
+  <script>
+    const yearEl = document.getElementById('y');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

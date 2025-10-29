@@ -1,136 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Certificates Page</title>
-    <style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Certificates • Viyola Shalma Monteiro</title>
+  <style>
+    :root{
+      --ink:#0b1e33; --muted:#5c6c82; --bg:#eef4ff;
+      --card:#ffffff; --line:#e6eef9;
+      --accent:#2e63ff; --accent-2:#72b7ff;
+      --shadow:0 16px 44px rgba(20,40,80,.14);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;padding:0;background:var(--bg);color:var(--ink);
+      font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif
+    }
 
-        
-        .main{
-            width: 100%;
-            background:url(bg.jpg);
-            background-position: center;
-            background-size: cover;
-            height: 100vh;
-            position: relative;
-            font-family: sans-serif;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
+    /* Backdrop */
+    .main{
+      min-height:100vh;
+      background:
+        radial-gradient(1100px 520px at 85% -10%, rgba(46,99,255,.12), transparent 60%),
+        url('bg.jpg') center/cover no-repeat fixed;
+      padding:28px;
+    }
 
-        .container {
-            width: 80%;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            text-align: center;
-        }
+    /* Shell */
+    .wrap{
+      max-width:1200px; margin:0 auto; overflow:hidden;
+      background:rgba(255,255,255,.8); backdrop-filter:saturate(140%) blur(6px);
+      border:1px solid var(--line); border-radius:24px; box-shadow:var(--shadow);
+    }
 
-        h1 {
-            text-align: center;
-            font-size: 28px;
-            color: #333;
-            margin-bottom: 30px;
-        }
+    /* Header */
+    .hero{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      background:linear-gradient(135deg,#0f2746,#0b1e33); color:#fff; padding:26px 28px;
+    }
+    .hero h1{margin:0; font-size:clamp(24px,4vw,36px)}
+    .hero p{margin:6px 0 0; color:#cfe2ff}
 
-        .certificate img {
-            width: 500px;
-            height: 500px;
-            object-fit: contain; /* Ensures the image scales properly without distortion */
-        }
+    /* Content */
+    .content{padding:24px}
 
-        .certificate {
-            margin-bottom: 30px;
-            padding: 15px;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            background-color: #fafafa;
-        }
+    /* Grid */
+    .grid{
+      display:grid; gap:18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
 
-        .back-button {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 18px;
-        }
+    /* Card */
+    .card{
+      border:1px solid var(--line); background:var(--card);
+      border-radius:16px; box-shadow:var(--shadow); overflow:hidden;
+      transition:transform .2s ease, box-shadow .2s ease; cursor:pointer; position:relative;
+    }
+    .card:hover{ transform:translateY(-4px); box-shadow:0 24px 60px rgba(20,40,80,.18) }
 
-        .back-button:hover {
-            background-color: #0056b3;
-        }
+    /* Thumb wrapper — fixed ratio + watermark overlay */
+    .thumb-wrap{
+      aspect-ratio: 4 / 3; background:#f5f7ff; display:grid; place-items:center; overflow:hidden; position:relative;
+    }
+    .thumb{
+      width:100%; height:100%; object-fit:contain; display:block; transition:transform .3s ease;
+      -webkit-user-drag:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none;
+      pointer-events:none; /* image itself can't be right-clicked */
+    }
+    .card:hover .thumb{ transform:scale(1.03) }
 
-    </style>
+    /* subtle repeating watermark on thumbs */
+    .thumb-wrap::after{
+      content:"Viyola Shalma Monteiro  •  Certificates";
+      position:absolute; inset:0; pointer-events:none;
+      background:
+        repeating-linear-gradient(
+          -30deg,
+          rgba(13,35,70,.08) 0 2px,
+          transparent 2px 70px
+        );
+      mix-blend-mode: multiply;
+    }
+
+    .caption{
+      padding:12px 14px; border-top:1px solid var(--line);
+      color:#274578; font-weight:700; font-size:14px; text-align:center;
+      background:#fbfdff;
+    }
+
+    /* Floating Back Button (always visible) */
+    .float-back {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: linear-gradient(120deg,var(--accent),var(--accent-2));
+      color: #fff;
+      padding: 14px 22px;
+      font-weight: 700;
+      border-radius: 999px;
+      box-shadow: 0 12px 28px rgba(46,99,255,0.35);
+      text-decoration: none;
+      transition: all .3s ease;
+      z-index: 1200;
+    }
+    .float-back:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(46,99,255,0.5);
+    }
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed; inset:0; background:rgba(10,16,28,.88);
+      display:none; align-items:center; justify-content:center; z-index:1000;
+      -webkit-user-select:none; user-select:none;
+    }
+    .lightbox.open{ display:flex }
+    .lb-inner{ position:relative; max-width:min(92vw,1200px); max-height:86vh; }
+    .lb-img{
+      display:block; max-width:100%; max-height:86vh; object-fit:contain; border-radius:12px;
+      background:#fff;
+      -webkit-user-drag:none; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none;
+      pointer-events:none; /* no direct interaction */
+    }
+    /* watermark overlay in lightbox too */
+    .lb-inner::after{
+      content:"Viyola Shalma Monteiro • Certificates";
+      position:absolute; inset:0; pointer-events:none;
+      background:
+        repeating-linear-gradient(
+          -28deg,
+          rgba(240,245,255,.16) 0 2px,
+          transparent 2px 80px
+        );
+      border-radius:12px;
+    }
+
+    .lb-cap{ color:#eaf1ff; text-align:center; margin-top:10px; font-size:15px }
+    .lb-btn{
+      position:absolute; top:50%; transform:translateY(-50%);
+      background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.3);
+      width:44px; height:44px; border-radius:999px; display:grid; place-items:center;
+      cursor:pointer; font-weight:900;
+    }
+    .lb-prev{ left:-56px } .lb-next{ right:-56px }
+    @media (max-width: 760px){
+      .lb-prev{ left:8px } .lb-next{ right:8px }
+    }
+    .lb-close{
+      position:absolute; top:-54px; right:0;
+      background:rgba(255,255,255,.16); color:#fff; border:1px solid rgba(255,255,255,.35);
+      width:40px; height:40px; border-radius:999px; display:grid; place-items:center; cursor:pointer;
+    }
+
+    /* Print hardening: hide images when printing */
+    @media print{
+      .thumb, .lb-img{ display:none !important; }
+      body::before{
+        content:"Printing disabled for certificates."; display:block; padding:40px; text-align:center; font-weight:700;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="main">
-    <div class="container">
-        <h1>Certificates</h1>
-
-       
-        <!-- Certificate 2 -->
-        <div class="certificate">
-            <img src="AI CERTIFICATE FROM JATAN SHAH_page-0001 (1).jpg" alt="Certificate 1">
+  <div class="main">
+    <div class="wrap">
+      <!-- Header -->
+      <header class="hero">
+        <div>
+          <h1>Certificates</h1>
+          <p>Milestones that mark the craft — learned, earned, and applied.</p>
         </div>
+      </header>
 
-        <!-- Certificate 4 -->
-        <div class="certificate">
-            <img src="certificates(Big Data)_page-0001.jpg" alt="Certificate 2">
+      <!-- Body -->
+      <section class="content">
+        <div class="grid" id="certGrid">
+          <figure class="card" data-title="AI Certificate (Jatan Shah)">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="AI CERTIFICATE FROM JATAN SHAH_page-0001 (1).jpg" alt="AI Certificate" draggable="false">
+            </div>
+            <figcaption class="caption">AI Certificate (Jatan Shah)</figcaption>
+          </figure>
+
+          <figure class="card" data-title="Big Data Certificate">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="certificates(Big Data)_page-0001.jpg" alt="Big Data Certificate" draggable="false">
+            </div>
+            <figcaption class="caption">Big Data Certificate</figcaption>
+          </figure>
+
+          <figure class="card" data-title="Optimising LinkedIn Profile">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="Optimising LinkedIn Profile_page-0001 (1).jpg" alt="Optimising LinkedIn Profile" draggable="false">
+            </div>
+            <figcaption class="caption">Optimising LinkedIn Profile</figcaption>
+          </figure>
+
+          <figure class="card" data-title="Mastering Interview & CV">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="Mastering interview CV_page-0001 (1).jpg" alt="Mastering Interview & CV" draggable="false">
+            </div>
+            <figcaption class="caption">Mastering Interview & CV</figcaption>
+          </figure>
+
+          <figure class="card" data-title="Python Programming Workshop">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="Python Programming Workshop_page-0001.jpg" alt="Python Workshop" draggable="false">
+            </div>
+            <figcaption class="caption">Python Programming Workshop</figcaption>
+          </figure>
+
+          <figure class="card" data-title="MySQL & Database Testing">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="MySQL-SQL and Database Testing_page-0001.jpg" alt="MySQL & Database Testing" draggable="false">
+            </div>
+            <figcaption class="caption">MySQL & Database Testing</figcaption>
+          </figure>
+
+          <figure class="card" data-title="GUVI Certification">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="GuviCertification - F62xi6M7h127p7Ia25.png" alt="GUVI Certification" draggable="false">
+            </div>
+            <figcaption class="caption">GUVI Certification</figcaption>
+          </figure>
+
+          <figure class="card" data-title="Crafting an Effective CV">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="Crafting an effective CV_page-0001.jpg" alt="Crafting an Effective CV" draggable="false">
+            </div>
+            <figcaption class="caption">Crafting an Effective CV</figcaption>
+          </figure>
+
+          <figure class="card" data-title="UI/UX for Beginners">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="UI-UX FOR BEGINNERS CERTIFICATE.jpg" alt="UI/UX for Beginners" draggable="false">
+            </div>
+            <figcaption class="caption">UI/UX for Beginners</figcaption>
+          </figure>
+
+          <figure class="card" data-title="AWS Certified (2022)">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="Amazon web services (AWS) Certified 2022_page-0001.jpg" alt="AWS Certified 2022" draggable="false">
+            </div>
+            <figcaption class="caption">AWS Certified (2022)</figcaption>
+          </figure>
+
+          <figure class="card" data-title="Agile Scrum Master">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="Agile_Scrum_Master_page-0001.jpg" alt="Agile Scrum Master" draggable="false">
+            </div>
+            <figcaption class="caption">Agile Scrum Master</figcaption>
+          </figure>
+
+          <figure class="card" data-title="Diploma in Graphic Design">
+            <div class="thumb-wrap">
+              <img class="thumb" loading="lazy" src="Diploma in Graphic design.png" alt="Diploma in Graphic Design" draggable="false">
+            </div>
+            <figcaption class="caption">Diploma in Graphic Design</figcaption>
+          </figure>
         </div>
-
-        <!-- Certificate 5 -->
-        <div class="certificate">
-            <img src="Optimising LinkedIn Profile_page-0001 (1).jpg" alt="Certificate 3">
-        </div>
-
-        <div class="certificate">
-            <img src="Mastering interview CV_page-0001 (1).jpg" alt="Certificate 4">
-        </div>
-
-        <div class="certificate">
-            <img src="Python Programming Workshop_page-0001.jpg" alt="Certificate 5">
-        </div>
-
-        <div class="certificate">
-            <img src="MySQL-SQL and Database Testing_page-0001.jpg" alt="Certificate 6">
-        </div>
-
-
-        <div class="certificate">
-            <img src="GuviCertification - F62xi6M7h127p7Ia25.png" alt="Certificate 7">
-        </div>
-
-        <div class="certificate">
-            <img src="Crafting an effective CV_page-0001.jpg" alt="Certificate 8">
-        </div>
-
-        <div class="certificate">
-            <img src="UI-UX FOR BEGINNERS CERTIFICATE.jpg" alt="Certificate 9">
-        </div>
-
-        <div class="certificate">
-            <img src="Amazon web services (AWS) Certified 2022_page-0001.jpg" alt="Certificate 10">
-        </div>
-
-        <div class="certificate">
-            <img src="Agile_Scrum_Master_page-0001.jpg" alt="Certificate 11">
-        </div>
-
-        <div class="certificate">
-            <img src="Diploma in Graphic design.png" alt="Certificate 12">
-        </div>
-
-        <!-- Back to Home button -->
-        <a href="index.html" class="back-button">Back to Home</a>
+      </section>
     </div>
-</div>
+  </div>
+
+  <!-- Floating Back Button -->
+  <a href="index.html" class="float-back">← Back</a>
+
+  <!-- Lightbox viewer -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lb-inner">
+      <img id="lbImg" class="lb-img" alt="Certificate preview" draggable="false">
+      <div id="lbCap" class="lb-cap"></div>
+      <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+      <button class="lb-btn lb-next" id="lbNext" aria-label="Next">›</button>
+      <button class="lb-close" id="lbClose" aria-label="Close">✕</button>
+    </div>
+  </div>
+
+  <script>
+    /* --- Soft protection layer (not foolproof) --- */
+    // Block right-click/context menu anywhere
+    document.addEventListener('contextmenu', e => e.preventDefault(), {capture:true});
+    // Block dragging images
+    document.addEventListener('dragstart', e => e.preventDefault(), {capture:true});
+    // Block common save/inspect/print shortcuts
+    document.addEventListener('keydown', e => {
+      const k = e.key.toLowerCase();
+      if ((e.ctrlKey||e.metaKey) && ['s','p','u','c','x','i','j'].includes(k)) { e.preventDefault(); }
+    }, {capture:true});
+
+    // Lightbox logic
+    const cards = Array.from(document.querySelectorAll('.card'));
+    const lb     = document.getElementById('lightbox');
+    const lbImg  = document.getElementById('lbImg');
+    const lbCap  = document.getElementById('lbCap');
+    const lbPrev = document.getElementById('lbPrev');
+    const lbNext = document.getElementById('lbNext');
+    const lbClose= document.getElementById('lbClose');
+
+    let idx = 0;
+
+    function openLB(i){
+      idx = i;
+      const img = cards[idx].querySelector('img');
+      lbImg.src = img.currentSrc || img.src;
+      lbCap.textContent = cards[idx].dataset.title || img.alt || '';
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+    }
+    function closeLB(){
+      lb.classList.remove('open');
+      lb.setAttribute('aria-hidden','true');
+      lbImg.src = '';
+      lbCap.textContent = '';
+    }
+    function next(){ openLB((idx + 1) % cards.length); }
+    function prev(){ openLB((idx - 1 + cards.length) % cards.length); }
+
+    cards.forEach((c,i)=> c.addEventListener('click', ()=>openLB(i)));
+    lbNext.addEventListener('click', next);
+    lbPrev.addEventListener('click', prev);
+    lbClose.addEventListener('click', closeLB);
+    lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLB(); });
+    document.addEventListener('keydown', (e)=>{
+      if(!lb.classList.contains('open')) return;
+      if(e.key==='Escape') closeLB();
+      if(e.key==='ArrowRight') next();
+      if(e.key==='ArrowLeft') prev();
+    });
+  </script>
 </body>
 </html>

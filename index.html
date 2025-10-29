@@ -1,102 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Viyola Shalma Monteiro | Full-Stack Developer</title>
+<style>
+  :root{
+    --ink:#0b1e33; --ink-2:#123a63;
+    --bg:#f3f7ff; --card:#ffffff; --line:#e6eefc;
+    --accent:#2e63ff; --accent-2:#72b7ff; --muted:#5c6c82;
+    --shadow:0 10px 30px rgba(20,40,80,.12);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+  /* NAVBAR */
+  .navbar{ position:sticky; top:0; z-index:50; background:#0e2a4b; color:#fff; box-shadow:var(--shadow) }
+  .nav-inner{display:flex;align-items:center;justify-content:center;padding:12px 20px}
+  .nav-links{display:flex;gap:18px;flex-wrap:wrap}
+  .nav-links a{
+    position:relative; display:inline-block; padding:10px 18px; border-radius:25px; color:#dce9ff; font-weight:600; letter-spacing:.3px;
+    transition:all .3s ease; background:linear-gradient(135deg,rgba(255,255,255,.05),rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.1); box-shadow:0 2px 4px rgba(0,0,0,.1)
+  }
+  .nav-links a:hover{ color:#fff; background:linear-gradient(135deg,#2e63ff,#72b7ff); box-shadow:0 4px 14px rgba(46,99,255,.4); transform:translateY(-2px) }
+  .nav-links a::after{
+    content:''; position:absolute; left:50%; bottom:5px; transform:translateX(-50%) scaleX(0); transform-origin:center;
+    width:40%; height:2px; background:#72b7ff; border-radius:2px; transition:transform .3s ease
+  }
+  .nav-links a:hover::after{ transform:translateX(-50%) scaleX(1) }
+
+  /* HERO */
+  .hero{ background:radial-gradient(1200px 500px at 80% -20%, rgba(46,99,255,.18), transparent 60%), #0f2746; color:#fff }
+  .hero-grid{ display:grid; grid-template-columns:1.4fr 1fr; gap:28px; align-items:center; padding:60px 0 }
+  .badge{ display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border:1px solid rgba(255,255,255,.28); border-radius:999px; background:rgba(255,255,255,.08); font-weight:700; line-height:1; white-space:nowrap }
+  h1{ font-size:clamp(32px,5vw,56px); line-height:1.05; margin:14px 0 12px }
+  .lead{ color:#cfe2ff; max-width:56ch; margin-bottom:22px }
+  .cta{ display:flex; gap:14px; flex-wrap:wrap }
+  .btn{ padding:12px 18px; border-radius:999px; font-weight:700; border:2px solid transparent; box-shadow:0 8px 20px rgba(0,0,0,.15) }
+  .btn.primary{ background:linear-gradient(120deg,var(--accent),var(--accent-2)); color:#fff }
+  .btn.ghost{ background:transparent; color:#e9f2ff; border-color:rgba(255,255,255,.35) }
+  .btn:hover{ transform:translateY(-1px) }
+
+  /* HERO PROFILE CARD */
+  .profile-card{
+    background:rgba(255,255,255,.08); backdrop-filter:saturate(140%) blur(4px);
+    border:1px solid rgba(255,255,255,.22); border-radius:20px; padding:16px;
+    display:grid; grid-template-columns:84px 1fr; gap:14px; align-items:center;
+  }
+  .avatar-wrap{
+    width:84px; height:84px; border-radius:16px; padding:6px; background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.28); display:flex; align-items:center; justify-content:center;
+  }
+  .avatar{ width:100%; height:100%; border-radius:12px; object-fit:cover; display:block; pointer-events:none; user-select:none; }
+
+  /* disable right-click save */
+  img {
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .pc-title{font-weight:800;margin:2px 0 4px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);font-size:14px;color:#dce9ff}
+
+  /* ABOUT SECTION */
+  .section{ padding:46px 0 }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px }
+  .about-grid{ display:grid; grid-template-columns:1fr 1.3fr; gap:20px; align-items:center }
+ .about-img{ border-radius:16px; overflow:hidden }
+  .about-img img{ width:100%; height:100%; object-fit:cover; display:block }
+  .pillset{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .pill{background:#eef4ff;border:1px solid #dbe7ff;padding:8px 12px;border-radius:999px;color:#25406b;font-weight:600}
+
+  @media (max-width: 960px){
+    .hero-grid{ grid-template-columns:1fr; gap:24px }
+    .about-grid{ grid-template-columns:1fr }
+  }
+</style>
 </head>
-<body>
-    <div class="main">
-        <div class="navbar">
-            <img src="logo.jpg" class="logo" alt="Logo">
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="skills.html">Skills</a></li>
-                <li><a href="project.html">Project</a></li>
-                <li><a href="certificate.html">Certificates</a></li>
-                <li><a href="view.html">View Resume</a></li>
-                <li><a href="googlemap.html">Google Map</a></li>
-                <li><a href="poster.html">Poster Designs</a></li>
-                <li><a href="Prompt.html">Explore AI</a></li>
+<body oncontextmenu="return false;"> <!-- disables right-click -->
 
-
-
-            </ul>
-        </div>
-        
-        <div class="info">
-            <h3>Hi, I'm <span>Viyola Shalma Monteiro</span></h3>
-            <h1><span>F</span>ULL<span> S</span>TACK<span> D</span>EVELOPER</h1>
-            <h3>
-                <p>Seeking a challenging position in an organization where I can learn new skills, expand my knowledge, and work for the growth of the organization.</p>
-                <p>I'm looking for an entry-level opportunity to contribute to the company's success.</p>
-            </h3>
-            <a href="view.html">Hire me</a>
-        </div>
-        
-        <section class="about">
-            <div class="about-img">
-                <img src="DP.jpg" alt="Profile Picture">
-            </div>
-            <div class="about-content">
-                <div class="info-1">
-                    <h1><span>Software Developer</span></h1>
-                </div>
-                <p>A versatile software developer proficient in HTML, CSS, 
-                    Bootstrap, Node.js, Java, React.js, C++, and Python capable 
-                    of creating robust, responsive, and dynamic web applications.
-                </p>
-                <div class="button-container">
-                    <a href="project.html" class="projects-button">Projects</a>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Internship Work Section -->
-        <div class="content">
-            <h2 class="aaa">Internships & Projects</h2>
-            <div class="project-section">
-                <div class="project">
-                    <img src="RDL.jpg" alt="Project 1" class="project-img">
-                    <div class="project-info">
-                        <h2>Process Monitoring System</h2>
-                        <p>During the project internship at RDL Technologies Pvt Ltd in Mangalore, you gained valuable experience in project management while also learning programming languages and frameworks such as Node.js, React.js, Bootstrap, and MySQL. This combination of technical and managerial skills has further strengthened your ability to handle both development and coordination tasks effectively.</p>
-                        <a href="Viyola Shalma Monteiro(Complete cerificate)_page-0001.jpg" class="project-link">View Certificate</a>
-                    </div>
-                </div>
-    
-                <div class="project">
-                    <img src="soluation.png" alt="Project 2" class="project-img">
-                    <div class="project-info">
-                        <h2>Web-Base Application</h2>
-                        <p>Developed project internship at Q-Tech Solutions in Mangalore, where you gained hands-on experience in project management and further enhanced your technical skills by working with programming languages like PHP, HTML, CSS, JavaScript, and MySQL. This opportunity allowed you to work on both front-end and back-end development, contributing to your overall web development expertise.</p>
-                        <a href="qtech certificate.jpg" class="project-link">View Certificate</a>
-                    </div>
-                </div>
-                
-    
-                <div class="project">
-                    <img src="udemy.png" alt="Project 3" class="project-img">
-                    <div class="project-info">
-                        <h2>Python Django Ecommerce </h2>
-                        <p>Developed a real-world project as part of your academic curriculum, mastering the fundamentals of Django and building an advanced Python e-commerce site. This project also included deploying the site on Amazon AWS, giving you experience with cloud platforms and deployment processes.</p>
-                        <a href="Python Project certificate.jpg" class="project-link">View Certificate</a>
-                    </div>
-                </div>
-    
-                <div class="project">
-                    <img src="js.png" alt="Project 4" class="project-img">
-                    <div class="project-info">
-                        <h2>Web development </h2>
-                        <p>During the development of the Simple Calculator project, you gained valuable hands-on experience in full-stack web development, working with technologies such as Node.js, HTML, CSS, and JavaScript. This project allowed you to build a functional calculator from scratch, enhancing both your front-end and back-end skills. You implemented core features like arithmetic operations and input validation while applying modern design principles to create an intuitive user interface. The project also gave you the opportunity to work with CSS animations, improving your design skills by adding dynamic elements like a running heading. Overall, this project deepened your understanding of web application development and user experience design.</p>
-                        <a href="https://github.com/viyolashalma/simplecal" class="project-link">GitHub</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="skills.html">Skills</a>
+        <a href="project.html">Project</a>
+        <a href="certificate.html">Certificates</a>
+        <a href="view.html">View&nbsp;Resume</a>
+        <a href="googlemap.html">Google&nbsp;Map</a>
+        <a href="poster.html">Poster&nbsp;Designs</a>
+        <a href="Prompt.html">Explore&nbsp;AI</a>
+      </div>
     </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="badge"><span>Junior&nbsp;Software&nbsp;Developer&nbsp;</span></div>
+        <h1>Hi, I’m <span style="color:#87c3ff">Viyola Shalma Monteiro</span></h1>
+        <p class="lead">
+          I’m driven to create, innovate, and apply my skills to craft meaningful digital experiences. 
+          My goal is to turn ideas into smart, dependable solutions built with clean code and creative precision.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="project.html">See Projects</a>
+          <a class="btn ghost" href="view.html">View Resume</a>
+        </div>
+      </div>
+
+      <aside class="profile-card">
+        <div class="avatar-wrap">
+          <img class="avatar" src="prodp1.jpg" alt="Profile Picture">
+        </div>
+        <div>
+          <div class="pc-title">Designing with logic, building with Heart.</div>
+          <div class="chips">
+            <span class="chip">HTML</span><span class="chip">CSS</span>
+            <span class="chip">MUI</span><span class="chip">Bootstrap</span><span class="chip">React.js</span>
+            <span class="chip">Python</span><span class="chip">Node.js</span><span class="chip">PHP</span>
+            <span class="chip">Canva</span><span class="chip">PhotoPea</span><span class="chip">AI Tools</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section class="section">
+    <div class="container about-grid">
+      <div class="about-img">
+        <img src="pro dp.jpg" alt="Viyola portrait">
+      </div>
+
+      <div class="card">
+        <h2>About Me</h2>
+    <p style="text-align: justify;">
+  I am a dedicated software developer who believes that technology should serve both function and form. 
+  My goal is to craft solutions that are technically robust and aesthetically thoughtful. With a passion 
+  for clean code and scalable design, I take pride in building systems that perform seamlessly and stand 
+  the test of time. I embrace new challenges as opportunities to learn and grow — blending creativity with 
+  solid engineering principles to bring digital ideas to life.  
+  Every line of code I write carries the intent to make technology feel human — intuitive, purposeful, and enduring.  
+  I find inspiration in timeless craftsmanship, where precision meets beauty and innovation honors tradition.  
+  My journey is not just about building software, but about shaping experiences that connect, empower, and inspire.
+</p>
+
+
+       
+        <div style="margin-top:16px">
+          <a class="btn primary" href="project.html">Projects</a>
+          <a class="btn" style="border:1px solid #cfe0ff;background:#f6faff;color:#17407a" href="skills.html">Skills</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </body>
 </html>

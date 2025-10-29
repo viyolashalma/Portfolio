@@ -1,196 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skills Page</title>
-    <style>
-         .main{
-            width: 100%;
-            background:url(bg.jpg);
-            background-position: center;
-            background-size: cover;
-            height: 100vh;
-            position: relative;
-            font-family: sans-serif;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Skills</title>
+<style>
+  :root{
+    --ink:#0b1e33; --muted:#5c6c82; --bg:#f3f7ff;
+    --card:#ffffff; --line:#e6eef9; --accent:#2e63ff; --accent-2:#72b7ff;
+    --shadow:0 16px 40px rgba(20,40,80,.12); --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-        }
+  /* Page wrapper with optional image */
+  .main{
+    min-height:100vh;
+    background:
+      radial-gradient(1100px 520px at 85% -10%, rgba(46,99,255,.12), transparent 60%),
+      url('bg.jpg') center/cover no-repeat fixed;
+    padding:28px;
+  }
 
-        h2 {
-            margin-top: 20px;
-            font-size: 30px;
-            text-align: center;
-            padding-bottom: 20px;
-        }
+  /* Shell */
+  .wrap{
+    max-width:1200px; margin:0 auto; overflow:hidden;
+    background:rgba(255,255,255,.78); backdrop-filter:saturate(140%) blur(6px);
+    border:1px solid var(--line); border-radius:24px; box-shadow:var(--shadow);
+  }
 
-        .skills-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Creates two columns with minimum width of 350px */
-            gap: 20px;
-            padding: 0 20px 40px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+  /* Header */
+  .hero{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    background:linear-gradient(135deg,#0f2746,#0b1e33); color:#fff; padding:24px 28px;
+  }
+  .hero h1{margin:0; font-size:clamp(24px,4vw,36px);}
+  .hero p{margin:4px 0 0; color:#cfe2ff}
+  .back{
+    display:inline-block; padding:10px 18px; border-radius:12px; font-weight:700;
+    background:linear-gradient(120deg,var(--accent),var(--accent-2)); color:#fff; text-decoration:none;
+    box-shadow:0 10px 24px rgba(46,99,255,.25);
+  }
 
-        .skill-box {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+  /* Body */
+  .content{padding:26px}
+  .note{
+    margin:-6px 0 18px; color:var(--muted);
+  }
 
-        .skill-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
-        }
+  /* Category chips */
+  .cats{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 22px}
+  .chip{
+    background:#eef4ff;border:1px solid #dbe7ff;color:#25406b;font-weight:700;
+    padding:8px 12px;border-radius:999px;font-size:14px;
+  }
 
-        .skill-box h3 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #007bff;
-            position: relative;
-        }
+  /* Grid */
+  .grid{
+    display:grid; gap:18px;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  }
 
-        .skill-box h3::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 3px;
-            background-color: #007bff;
-            margin-top: 5px;
-        }
+  /* Card */
+  .card{
+    position:relative; border:1px solid var(--line); background:var(--card);
+    border-radius:var(--radius); padding:18px; box-shadow:var(--shadow);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover{ transform:translateY(-4px); box-shadow:0 22px 46px rgba(20,40,80,.18) }
 
-        .skill-box p {
-            font-size: 16px;
-            color: #555;
-            text-align: justify;
-        }
+  .head{display:flex; align-items:center; gap:12px; margin-bottom:8px}
+  .icon{
+    width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(135deg,rgba(46,99,255,.15),rgba(114,183,255,.15)); color:#1d3f7a;
+    font-weight:900;
+  }
+  .title{margin:0;font-size:18px}
+  .desc{margin:6px 0 12px; color:var(--muted); text-align:justify}
 
-        .back-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 30px;
-            text-align: center;
-            transition: background-color 0.3s ease;
-            margin-left: 20px;
-        }
+  /* Proficiency bar (set --lvl: 0–100) */
+  .meter{
+    position:relative;height:8px;border-radius:999px;background:#edf2ff;border:1px solid #dbe7ff; overflow:hidden;
+  }
+  .meter::after{
+    content:""; position:absolute; inset:0; width:var(--lvl,70%);
+    background:linear-gradient(90deg,var(--accent),var(--accent-2)); border-radius:999px;
+  }
 
-        .back-btn:hover {
-            background-color: #0056b3;
-        }
+  /* Footer */
+  .foot{padding:18px 26px; color:#6c7b92; font-size:14px; text-align:center}
 
-        .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+  /* Floating Back Button (Always Visible) */
+  .float-back {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: linear-gradient(120deg,var(--accent),var(--accent-2));
+    color: #fff;
+    padding: 14px 24px;
+    font-weight: 700;
+    border-radius: 999px;
+    box-shadow: 0 10px 25px rgba(46,99,255,0.35);
+    text-decoration: none;
+    transition: all .3s ease;
+    z-index: 9999;
+  }
+  .float-back:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 35px rgba(46,99,255,0.5);
+  }
 
-    </style>
+</style>
 </head>
 <body>
 <div class="main">
-    <div class="container">
-        <h2>Skills</h2>
-        <a href="index.html" class="back-btn">Back to Home</a>
-    </div>
-    
-    <div class="skills-section">
-        <div class="skill-box">
-            <h3>HTML</h3>
-            <p>HTML (HyperText Markup Language) is the standard markup language used to create and design the structure of web pages. It defines the basic building blocks of web content and allows browsers to display text, images, forms, and other elements on the web.</p>
-        </div>
+  <div class="wrap">
+    <!-- Header -->
+    <header class="hero">
+      <div>
+        <h1>Skills</h1>
+        <p>The instruments of my craft — blending precision, creativity, and logic into digital form.</p>
+      </div>
+      <!-- <a class="back" href="index.html">Back to Home</a> -->
+    </header>
 
-        <div class="skill-box">
-            <h3>CSS</h3>
-            <p>CSS (Cascading Style Sheets) is a stylesheet language used to describe the presentation of a web page. It allows you to control the layout, colors, fonts, spacing, and overall visual appearance of HTML elements.</p>
-        </div>
+    <!-- Body -->
+    <section class="content">
+      <p class="note">Organized into key areas — Frontend, Backend, Databases, Programming, and Creative Tools — highlighting both technical and creative versatility.</p>
+      <div class="cats">
+        <span class="chip">Frontend</span>
+        <span class="chip">Backend</span>
+        <span class="chip">Databases</span>
+        <span class="chip">Programming</span>
+        <span class="chip">Design & Media</span>
+      </div>
 
-        <div class="skill-box">
-            <h3>JavaScript</h3>
-            <p>JavaScript is a versatile, high-level programming language that is primarily used to create interactive and dynamic content on web pages. It enables websites to go beyond static pages and become fully interactive.</p>
-        </div>
+      <div class="grid">
 
-        <div class="skill-box">
-            <h3>Node.js</h3>
-            <p>Node.js is an open-source, cross-platform JavaScript runtime environment that allows developers to execute JavaScript code outside of a web browser. It is commonly used to create scalable, high-performance web applications and APIs.</p>
-        </div>
+        <!-- Frontend -->
+        <article class="card">
+          <div class="head">
+            <div class="icon">H</div><h3 class="title">HTML</h3>
+          </div>
+          <p class="desc">The foundation of every web page, structuring content with clarity.
+          I use it to give meaning and hierarchy to digital layouts.
+          It’s the skeleton that holds the beauty of the web together.</p>
+          <div class="meter" style="--lvl:92%"></div>
+        </article>
 
-        <div class="skill-box">
-            <h3>React.js</h3>
-            <p>React.js is a JavaScript library for building user interfaces. It allows developers to create reusable UI components, manage state efficiently, and render components dynamically based on user interaction.</p>
-        </div>
+        <article class="card">
+          <div class="head">
+            <div class="icon">C</div><h3 class="title">CSS</h3>
+          </div>
+          <p class="desc">Brings life to structure — adding style, color, and form.
+            It transforms plain markup into elegant design.
+            A powerful tool for expressing creativity through code.</p>
+          <div class="meter" style="--lvl:90%"></div>
+        </article>
 
-        <div class="skill-box">
-            <h3>Python</h3>
-            <p>Python is an interpreted, object-oriented, high-level programming language with dynamic semantics developed by Guido van Rossum. It is designed to be easy to understand and fun to use.</p>
-        </div>
+        <article class="card">
+          <div class="head">
+            <div class="icon">R</div><h3 class="title">React.js</h3>
+          </div>
+          <p class="desc">A modern JavaScript library for building dynamic user interfaces.
+            It allows me to craft fast, component-based web apps.
+            Efficient, modular, and loved for its reusability.</p>
+          <div class="meter" style="--lvl:82%"></div>
+        </article>
 
-        <div class="skill-box">
-            <h3>C++</h3>
-            <p>C++ is an object-oriented programming (OOP) language that is widely used for creating large-scale applications. It is a superset of the C language, providing better tools for system-level programming.</p>
-        </div>
+        <article class="card">
+          <div class="head">
+            <div class="icon">M</div><h3 class="title">MUI</h3>
+          </div>
+          <p class="desc">A React framework based on Google’s Material Design.
+            Helps me build polished, professional UIs quickly.
+            Balancing aesthetics with usability through ready-made components.</p>
+          <div class="meter" style="--lvl:78%"></div>
+        </article>
 
-        <div class="skill-box">
-            <h3>MySQL</h3>
-            <p>MySQL is the world’s most popular open-source database. It powers many of the most accessed applications, including Facebook, Twitter, Netflix, Uber, Airbnb, and more.</p>
-        </div>
+         <article class="card">
+          <div class="head">
+            <div class="icon">JS</div><h3 class="title">JavaScript</h3>
+          </div>
+          <p class="desc">JavaScript breathes life into web pages, transforming static designs into living, responsive experiences. It bridges user interaction and logic, weaving movement, animation, and intelligence together</p>
+          <div class="meter" style="--lvl:84%"></div>
+        </article>
 
-        <div class="skill-box">
-            <h3>MongoDB</h3>
-            <p>MongoDB is a NoSQL database that utilizes JSON-like documents with optional schemas. It is highly scalable and is used in modern applications where flexibility in database structure is required.</p>
-        </div>
+        <!-- Backend -->
+        <article class="card">
+          <div class="head">
+            <div class="icon">N</div><h3 class="title">Node.js</h3>
+          </div>
+          <p class="desc">A runtime that lets JavaScript work on the server side.
+        Perfect for building fast, scalable backend systems.
+        I use it to connect logic, databases, and APIs seamlessly.</p>
+                  <div class="meter" style="--lvl:80%"></div>
+        </article>
 
-        <div class="skill-box">
-            <h3>C</h3>
-            <p>The C programming language is a general-purpose language that supports structured programming and provides low-level access to memory, making it ideal for system-level programming.</p>
-        </div>
+        <article class="card">
+          <div class="head">
+            <div class="icon">D</div><h3 class="title">Python (Django)</h3>
+          </div>
+          <p class="desc">A high-level Python framework that emphasizes simplicity and security.
+            It allows rapid backend development with clean structure.
+            My go-to for powerful, data-driven web applications.</p>
+          <div class="meter" style="--lvl:75%"></div>
+        </article>
 
-                <div class="skill-box">
-            <h3>MUI</h3>
-            <p>MUI (Material-UI) is a popular React UI framework that offers a wide range of pre-built components based on Google’s Material Design, helping developers build consistent, modern, and responsive web applications.</p>
-        </div>
+         <article class="card">
+          <div class="head">
+            <div class="icon">∑</div><h3 class="title">PHP</h3>
+          </div>
+          <p class="desc">A scripting language built for the web.
+            Enables dynamic server-side content and database interactions.
+            I use it to power smooth, functional websites.</p>
+          <div class="meter" style="--lvl:76%"></div>
+        </article>
 
-        <div class="skill-box">
-            <h3>Canva</h3>
-            <p>Canva is an online graphic design platform that allows users to create social media graphics, presentations, posters, and other visual content using an easy-to-use drag-and-drop interface and templates.</p>
-        </div>
+        <article class="card">
+          <div class="head">
+            <div class="icon">C++</div><h3 class="title">C++</h3>
+          </div>
+          <p class="desc">A powerful, performance-driven programming language.
+          Used to build efficient software and handle complex computations.
+          It sharpens my understanding of memory and logic flow.</p>
+          <div class="meter" style="--lvl:70%"></div>
+        </article>
 
-        <div class="skill-box">
-            <h3>Photoshop</h3>
-            <p>Adobe Photoshop is a powerful image editing software used by professionals to create, enhance, and manipulate images and graphics for both digital and print media.</p>
-        </div>
+        <!-- Databases -->
+        <article class="card">
+          <div class="head">
+            <div class="icon">SQL</div><h3 class="title">MySQL</h3>
+          </div>
+          <p class="desc">A reliable relational database management system.
+            It helps organize and retrieve structured data efficiently.
+            Essential for apps that demand speed and accuracy.</p>
+          <div class="meter" style="--lvl:82%"></div>
+        </article>
 
-        <div class="skill-box">
-            <h3>InShot</h3>
-            <p>InShot is a user-friendly mobile video and photo editing app that enables users to trim, merge, add effects, and apply filters, ideal for creating content for social media platforms.</p>
-        </div>
+        <article class="card">
+          <div class="head">
+            <div class="icon">DB</div><h3 class="title">MongoDB</h3>
+          </div>
+          <p class="desc">A flexible, NoSQL database for modern applications.
+          Ideal for handling large, unstructured, or evolving data.
+          I use it when adaptability matters more than strict schema.</p>
+          <div class="meter" style="--lvl:68%"></div>
+        </article>
 
-            <div class="skill-box">
-        <h3>DBMS</h3>
-        <p>A Database Management System (DBMS) is software that enables the creation, storage, modification, and retrieval of data in databases, ensuring data integrity, security, and efficient access for users and applications.</p>
-    </div>
-    </div>
+        <!-- Design & Media -->
+        <article class="card">
+          <div class="head">
+            <div class="icon">Ca</div><h3 class="title">Canva</h3>
+          </div>
+          <p class="desc">A creative tool for quick, clean, and beautiful designs.
+          I use it to craft visuals, posters, and social media graphics.
+          Perfect blend of simplicity and professional results.</p>
+          <div class="meter" style="--lvl:70%"></div>
+        </article>
+
+        <article class="card">
+          <div class="head">
+            <div class="icon">AP</div><h3 class="title">Adobe Photoshop</h3>
+          </div>
+          <p class="desc">The gold standard of image editing and digital art.
+            I use it for retouching, designing, and visual storytelling.
+            Every layer adds depth to the story I want to convey.</p>
+          <div class="meter" style="--lvl:72%"></div>
+        </article>
+
+        <article class="card">
+          <div class="head">
+            <div class="icon">PP</div><h3 class="title">Photopea</h3>
+          </div>
+          <p class="desc">A web-based image editor that mirrors Photoshop’s versatility.
+          Useful for quick edits without heavy software.
+          I love its convenience and cross-platform flexibility.</p>
+          <div class="meter" style="--lvl:86%"></div>
+        </article>
+
+        <article class="card">
+          <div class="head">
+            <div class="icon">IN</div><h3 class="title">InShot</h3>
+          </div>
+          <p class="desc">InShot is a creative companion for bringing moments to motion — simple, intuitive, and full of charm. 
+            It allows me to trim, merge, and shape videos with elegance, turning raw clips into meaningful stories.</p>
+          <div class="meter" style="--lvl:74%"></div>
+        </article>
+
+        <article class="card">
+          <div class="head">
+            <div class="icon">AI</div><h3 class="title">AI Tools</h3>
+          </div>
+          <p class="desc">Intelligent systems that enhance creativity and productivity.
+          I use them for automating ideas, designs, and insights.
+          Where human imagination meets machine precision.</p>
+          <div class="meter" style="--lvl:70%"></div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- <div class="foot">© <span id="y"></span> Viyola Shalma Monteiro — Built with care and curiosity.</div> -->
+  </div>
 </div>
+
+<!-- Floating Back Button -->
+<a href="index.html" class="float-back">← Back </a>
+
+<script>
+  document.getElementById('y').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>

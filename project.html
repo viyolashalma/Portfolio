@@ -1,151 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <div class="main">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Page</title>
-    <style>
-            .main{
-            width: 100%;
-            background:url(bg.jpg);
-            background-position: center;
-            background-size: cover;
-            height: 100vh;
-            position: relative;
-            font-family: sans-serif;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Internships & Projects • Viyola Shalma Monteiro</title>
+  <style>
+    :root{
+      --ink:#0b1e33; --muted:#5c6c82; --bg:#eef4ff;
+      --card:#ffffff; --line:#e6eef9;
+      --accent:#2e63ff; --accent-2:#72b7ff;
+      --shadow:0 16px 44px rgba(20,40,80,.14);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+      font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
+    /* Backdrop (uses your bg.jpg) */
+    .main{
+      min-height:100vh;
+      background:
+        radial-gradient(1100px 520px at 85% -10%, rgba(46,99,255,.12), transparent 60%),
+        url('bg.jpg') center/cover no-repeat fixed;
+      padding:28px;
+    }
 
-        .content {
-            padding: 20px;
-            text-align: center;
-        }
+    /* Shell */
+    .wrap{
+      max-width:1100px; margin:0 auto; overflow:hidden;
+      background:rgba(255,255,255,.8);
+      backdrop-filter:saturate(140%) blur(6px);
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+    }
 
-        h2 {
-            font-size: 30px;
-            margin-bottom: 20px;
-        }
+    /* Header */
+    .hero{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      background:linear-gradient(135deg,#0f2746,#0b1e33); color:#fff;
+      padding:26px 28px;
+    }
+    .hero h1{margin:0;font-size:clamp(24px,4vw,36px)}
+    .hero p{margin:6px 0 0; color:#cfe2ff}
+    .back{
+      display:inline-block; padding:10px 18px; border-radius:12px; font-weight:700;
+      background:linear-gradient(120deg,var(--accent),var(--accent-2)); color:#fff; text-decoration:none;
+      box-shadow:0 10px 24px rgba(46,99,255,.25);
+    }
 
-        .project-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
+    /* Content */
+    .content{padding:26px}
 
-        .project {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background-color: white;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 800px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+    /* Project grid */
+    .projects{
+      display:grid; gap:18px;
+      grid-template-columns: 1fr;
+    }
 
-        .project-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 8px;
-            object-fit: cover;
-        }
+    /* Project card */
+    .card{
+      border:1px solid var(--line); background:var(--card);
+      border-radius:var(--radius); box-shadow:var(--shadow);
+      overflow:hidden;
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover{ transform:translateY(-4px); box-shadow:0 24px 60px rgba(20,40,80,.18) }
 
-        .project-info {
-            text-align: left;
-            flex-grow: 1;
-        }
+    /* Card layout */
+    .row{
+      display:grid; gap:18px; align-items:center;
+      grid-template-columns: 150px 1fr;
+      padding:16px;
+    }
+    @media (max-width: 700px){
+      .row{ grid-template-columns: 1fr }
+    }
 
-        .textbox {
-            display: block;
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
+    /* Image */
+    .thumb{
+      width:150px; height:120px; border-radius:14px; object-fit:cover;
+      border:1px solid var(--line); display:block;
+    }
 
-        button, .project-link, .back-btn {
-            padding: 10px 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            text-decoration: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+    /* Text */
+    .title{margin:0 0 6px; font-size:20px}
+    .desc{margin:0 0 12px; color:var(--muted); text-align:justify}
 
-        .project-link {
-            display: inline-block;
-            margin-top: 10px;
-        }
+    /* Tech tags */
+    .tags{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 0}
+    .tag{
+      background:#eef4ff; border:1px solid #dbe7ff; color:#25406b; font-weight:700;
+      padding:6px 10px; border-radius:999px; font-size:13px;
+    }
 
-        .back-btn {
-            margin-top: 30px;
-            display: inline-block;
-        }
+    /* Actions */
+    .actions{margin-top:12px}
+    .btn{
+      display:inline-block; padding:8px 14px; border-radius:10px; font-weight:700;
+      color:#17407a; text-decoration:none; background:#f6faff; border:1px solid #cfe0ff;
+    }
+    .btn:hover{ background:#edf4ff }
 
-        button:hover, .project-link:hover, .back-btn:hover {
-            background-color: #555;
-        }
-    </style>
+    /* Footer */
+    .foot{padding:18px 26px; color:#6c7b92; font-size:14px; text-align:center}
+    .foot .back-bottom{
+      display:inline-block; margin-top:12px; padding:10px 18px; border-radius:12px; font-weight:700;
+      background:linear-gradient(120deg,var(--accent),var(--accent-2)); color:#fff; text-decoration:none;
+      box-shadow:0 10px 24px rgba(46,99,255,.25);
+    }
+
+    /* Floating Back Button */
+    .float-back{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: linear-gradient(120deg,var(--accent),var(--accent-2));
+      color: #fff;
+      padding: 14px 24px;
+      font-weight: 700;
+      border-radius: 999px;
+      box-shadow: 0 10px 25px rgba(46,99,255,0.35);
+      text-decoration: none;
+      transition: all .3s ease;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .float-back:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 14px 35px rgba(46,99,255,0.5);
+    }
+  </style>
 </head>
 <body>
-    <div class="content">
-        <h2>Internships & Projects</h2>
-        <div class="project-section">
-            <div class="project">
-                <img src="RDL.jpg" alt="Project 1" class="project-img">
-                <div class="project-info">
-                    <h2>Process Monitoring System</h2>
-                    <p>During the project internship at RDL Technologies Pvt Ltd in Mangalore, you gained valuable experience in project management while also learning programming languages and frameworks such as Node.js, React.js, Bootstrap, and MySQL. This combination of technical and managerial skills has further strengthened your ability to handle both development and coordination tasks effectively.</p>
-                    <a href="https://github.com/viyolashalma/PMS-ReactJS" class="project-link">GitHub</a>
-                </div>
-            </div>
-
-            <div class="project">
-                <img src="soluation.png" alt="Project 2" class="project-img">
-                <div class="project-info">
-                    <h2>Web-Base Application</h2>
-                    <p>Developed project internship at Q-Tech Solutions in Mangalore, where you gained hands-on experience in project management and further enhanced your technical skills by working with programming languages like PHP, HTML, CSS, JavaScript, and MySQL. This opportunity allowed you to work on both front-end and back-end development, contributing to your overall web development expertise.</p>
-                    <a href="https://github.com/viyolashalma/ProjectIdex" class="project-link">GitHub</a>
-                </div>
-            </div>
-            
-
-            <div class="project">
-                <img src="udemy.png" alt="Project 3" class="project-img">
-                <div class="project-info">
-                    <h2>Python Django Ecommerce </h2>
-                    <p>Developed a real-world project as part of your academic curriculum, mastering the fundamentals of Django and building an advanced Python e-commerce site. This project also included deploying the site on Amazon AWS, giving you experience with cloud platforms and deployment processes.</p>
-                    <a href="https://github.com/viyolashalma/bharathenterprises-django" class="project-link">GitHub</a>
-                </div>
-            </div>
-
-            <div class="project">
-                <img src="js.png" alt="Project 4" class="project-img">
-                <div class="project-info">
-                    <h2>Web development </h2>
-                    <p>During the development of the Simple Calculator project, you gained valuable hands-on experience in full-stack web development, working with technologies such as Node.js, HTML, CSS, and JavaScript. This project allowed you to build a functional calculator from scratch, enhancing both your front-end and back-end skills. You implemented core features like arithmetic operations and input validation while applying modern design principles to create an intuitive user interface. The project also gave you the opportunity to work with CSS animations, improving your design skills by adding dynamic elements like a running heading. Overall, this project deepened your understanding of web application development and user experience design.</p>
-                    <a href="https://github.com/viyolashalma/simplecal" class="project-link">GitHub</a>
-                </div>
-            </div>
+  <div class="main">
+    <div class="wrap">
+      <!-- Header -->
+      <header class="hero">
+        <div>
+          <h1>Internships & Projects</h1>
+          <p>Selected work — practical, reliable, and thoughtfully built.</p>
         </div>
-        <a href="index.html" class="back-btn">Back to Home</a>
+      </header>
+
+      <!-- Body -->
+      <section class="content">
+        <div class="projects">
+
+          <!-- Project 1 -->
+          <article class="card">
+            <div class="row">
+              <img class="thumb" src="RDL.jpg" alt="Process Monitoring System">
+              <div>
+                <h3 class="title">Process Monitoring System</h3>
+                <p class="desc">
+                  Internship at RDL Technologies (Mangalore). Hands-on with Node.js, React.js, Bootstrap, and MySQL —
+                  combining project coordination with full-stack development to track and visualize process data.
+                </p>
+                <div class="tags">
+                  <span class="tag">Node.js</span><span class="tag">React.js</span><span class="tag">Bootstrap</span><span class="tag">MySQL</span>
+                </div>
+                <div class="actions">
+                  <a class="btn" href="https://github.com/viyolashalma/PMS-ReactJS" target="_blank" rel="noopener">GitHub</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="card">
+            <div class="row">
+              <img class="thumb" src="soluation.png" alt="PHP Web-Based Application">
+              <div>
+                <h3 class="title">Web-Based Application</h3>
+                <p class="desc">
+                  Internship at Q-Tech Solutions (Mangalore). Built end-to-end features using PHP, HTML, CSS, JavaScript,
+                  and MySQL — delivering UI polish and reliable backend logic for a production-style web app.
+                </p>
+                <div class="tags">
+                  <span class="tag">PHP</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">MySQL</span>
+                </div>
+                <div class="actions">
+                  <a class="btn" href="https://github.com/viyolashalma/ProjectIdex" target="_blank" rel="noopener">GitHub</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="card">
+            <div class="row">
+              <img class="thumb" src="udemy.png" alt="Python Django Ecommerce">
+              <div>
+                <h3 class="title">Python Django Ecommerce</h3>
+                <p class="desc">
+                  Academic project focused on Django fundamentals and deployment. Built an e-commerce site with
+                  authentication, product flow, and admin tools; learned cloud deployment basics with AWS.
+                </p>
+                <div class="tags">
+                  <span class="tag">Django</span><span class="tag">Python</span><span class="tag">AWS</span>
+                </div>
+                <div class="actions">
+                  <a class="btn" href="https://github.com/viyolashalma/bharathenterprises-django" target="_blank" rel="noopener">GitHub</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="card">
+            <div class="row">
+              <img class="thumb" src="js.png" alt="Simple Calculator Project">
+              <div>
+                <h3 class="title">Web Development — Simple Calculator</h3>
+                <p class="desc">
+                  Built a functional calculator with Node.js, HTML, CSS, and JavaScript. Implemented operations,
+                  validation, and a clean animated UI — sharpening both front-end and back-end fundamentals.
+                </p>
+                <div class="tags">
+                  <span class="tag">Node.js</span><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+                </div>
+                <div class="actions">
+                  <a class="btn" href="https://github.com/viyolashalma/simplecal" target="_blank" rel="noopener">GitHub</a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <!-- <div class="foot">
+        <a class="back-bottom" href="index.html">Back to Home</a>
+      </div> -->
+
+
     </div>
-</div>
+     <!-- Floating Back Button -->
+         <a href="index.html" class="float-back">← Back</a>
+  </div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>

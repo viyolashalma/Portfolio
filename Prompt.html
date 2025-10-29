@@ -1,72 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Image & Video Portfolio</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #e6f0ff;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #001f3f;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Image & Video Portfolio</title>
+<style>
+  :root{
+    --ink:#001f3f;
+    --sky:#e6f0ff;
+    --paper:#ffffff;
+    --accent:#3563e9;
+    --accent-2:#6dd5ed;
+    --card:#f6f9ff;
+    --line:#e3ecff;
+  }
+
+  /* Page */
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--sky);}
+  header{background:var(--ink);color:#fff;text-align:center;padding:32px 16px;}
+  header h1{margin:0 0 6px;font-size:clamp(24px,4vw,36px)}
+  header p{margin:0;opacity:.9}
+
+  /* Shell (no more negative margin) */
+  .container{
+    max-width:1100px;margin:28px auto 48px;background:var(--paper);
+    border-radius:20px;padding:24px 22px;box-shadow:0 15px 35px rgba(0,0,0,.08);
+  }
+  .subtle{color:#40506b;margin:0 0 16px}
+
+  /* Switcher */
+  .switcher{display:flex;gap:14px;justify-content:center;align-items:center;margin:8px 0 18px}
+  .switcher button{
+    appearance:none;border:0;cursor:pointer;padding:12px 22px;border-radius:999px;font-weight:700;
+    background:linear-gradient(180deg,#fff,#f2f6ff) padding-box,
+               linear-gradient(120deg,var(--accent),var(--accent-2)) border-box;
+    border:2px solid transparent; box-shadow:0 8px 18px rgba(53,99,233,.18);
+    transition:transform .06s ease, box-shadow .2s ease, background .25s ease, color .25s ease;
+  }
+  .switcher button:hover{transform:translateY(-1px)}
+  .switcher button[aria-pressed="true"]{
+    color:#fff; background:linear-gradient(120deg,var(--accent),var(--accent-2));
+  }
+
+  /* Grid */
+  .deck{display:grid;grid-template-columns:1fr;gap:22px}
+  @media (min-width: 860px){ .deck{grid-template-columns:1fr 1fr} }
+
+  /* Cards */
+  .card{
+    border-radius:16px;background:linear-gradient(180deg,#f9fbff,#f3f7ff);
+    border:1px solid var(--line); padding:16px; box-shadow:0 8px 18px rgba(0,0,0,.05);
+    display:flex;flex-direction:column;gap:10px;min-height:100%;
+  }
+  .card label{font-weight:700;color:#003366}
+
+  /* PERFECT, UNIFORM MEDIA SIZE */
+  .media-frame{
+    width:100%; aspect-ratio:16/9; /* consistent size for images & videos */
+    border-radius:14px; overflow:hidden; background:#eaf1ff; border:1px solid var(--line);
+  }
+  .media-frame img,
+  .media-frame video{
+    width:100%; height:100%; display:block; object-fit:cover; /* trims to the frame */
+  }
+
+  textarea{
+    width:100%;min-height:120px;margin-top:2px;padding:12px;border-radius:12px;border:1px solid #d6e2ff;
+    background:#fff;font-family:"Courier New", Courier, monospace;line-height:1.45;white-space:pre-wrap;
+  }
+
+   /* Floating Back Button */
+    .float-back{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: linear-gradient(120deg,var(--accent),var(--accent-2));
       color: #fff;
-      padding: 20px;
-      text-align: center;
+      padding: 14px 24px;
+      font-weight: 700;
+      border-radius: 999px;
+      box-shadow: 0 10px 25px rgba(46,99,255,0.35);
+      text-decoration: none;
+      transition: all .3s ease;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
-    .container {
-      padding: 30px;
-      max-width: 900px;
-      margin: auto;
-      background-color: #ffffff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    .float-back:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 14px 35px rgba(46,99,255,0.5);
     }
-    h2 {
-      color: #003366;
-      border-bottom: 2px solid #cce0ff;
-      padding-bottom: 10px;
-    }
-    .upload-prompt-section {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      margin-top: 20px;
-    }
-    .media-block {
-      display: flex;
-      flex-direction: column;
-      border: 2px dashed #ccc;
-      padding: 20px;
-      background-color: #f9fbff;
-    }
-    .media-preview {
-      margin-top: 10px;
-      font-style: italic;
-      color: #888;
-    }
-    .media-preview img {
-      max-width: 100%;
-      height: auto;
-      margin-top: 10px;
-    }
-    .media-preview video {
-      width: 100%;
-      margin-top: 10px;
-    }
-    textarea {
-      width: 100%;
-      height: 100px;
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 10px;
-      line-height: 1.5;
-      font-family: "Courier New", Courier, monospace;
-      white-space: pre-wrap;
-    }
-  </style>
+
+  /* Show/Hide with a soft reveal */
+  section[hidden]{display:none}
+  section.reveal{animation:fadeIn .24s ease}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+</style>
 </head>
 <body>
   <header>
@@ -74,88 +105,243 @@
     <p>Explore the AI images and videos I've created</p>
   </header>
 
-  <div class="container">
-    <h2>Image and Video</h2>
-    <div class="upload-prompt-section">
+  <main class="container">
+    <p class="subtle">Discover the art that AI and I have crafted</p>
 
-      <!-- Image Block 1 -->
-      <div class="media-block">
-        <label><strong>Image Preview</strong></label>
-        <div class="media-preview">
-          <img src="AI_img1.png" alt="AI Image 1">
-        </div>
-        <textarea readonly>A cute, anthropomorphic cat vlogging in modern Dubai. The cat is standing on two legs, wearing sunglasses and a small backpack, holding a selfie stick with a smartphone attached. Iconic Dubai landmarks are in the background.</textarea>
-      </div>
-
-
-
-      <!-- Image Block 2 -->
-     <div class="media-block">
-  <label><strong>Image Preview</strong></label>
-  <div class="media-preview">
-    <img src="AI_img2.png" alt="AI Image 2">
-  </div>
-  <textarea readonly> The texture of the fur is detailed and lifelike, with sunlight casting smooth highlights and soft shadows across the surface. The plane is mid-air, with realistic sky and clouds in the background — vibrant blue sky, scattered cumulus clouds below. The scene is cinematic and whimsical, blending realism with surreal charm. The airplane windows and engines are still visible, contrasting subtly with the furry exterior.</textarea>
-</div>
-
-        <!-- Image Block 3 -->
-      <div class="media-block">
-  <label><strong>Image Preview</strong></label>
-  <div class="media-preview">
-    <img src="AI_img3.png" alt="AI Image 3">
-  </div>
-        <textarea readonly>A dream home in the bc canada forests with a creek next to it, a loft style house with floor to ceiling windows in the front and shaped like a geodesic dome with skylights. Near Home add some birds and animals.</textarea>
-      </div>
-
-        <!-- Video Block 1 -->
-        <div class="media-block">
-         <label><strong>Video Preview</strong></label>
-         <div class="media-preview">
-            <video controls autoplay muted playsinline width="700" height="500">
-            <source src="vid1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-            </video>
-        </div>
-        <textarea readonly>A playful orange tabby cat sitting in a cornfield. It plays with corn kernels on a wooden table, while behind it, the farmhouse and tall corn stalks create a rustic, peaceful scene.</textarea>
-        </div>
-
-      <!-- Video Block 2 -->
-      <div class="media-block">
-        <label><strong>Video Preview</strong></label>
-        <div class="media-preview">
-          <video controls autoplay muted playsinline width="700" height="500">
-            <source src="vid2.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <textarea readonly> Star Wars style stormtroopers invading a modern office, pastel theme.</textarea>
-      </div>
-
-      <!-- Video Block 3 -->
-       <div class="media-block">
-        <label><strong>Video Preview</strong></label>
-        <div class="media-preview">
-          <video controls autoplay muted playsinline width="700" height="500">
-            <source src="vid3.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <textarea readonly> Star Wars–style stormtroopers invade a sleek modern office, bathed in soft pastel hues of pink, blue, and mint. Their white armor gleams against the minimalist décor — glass desks, glowing screens, and stylish chairs. The troopers move with purpose as stunned office workers watch, creating a surreal blend of sci-fi tension and dreamy modern design.</textarea>
-      </div>
-
-        <!-- Video Block 4 --> 
-      <div class="media-block">
-        <label><strong>Video Preview</strong></label>
-        <div class="media-preview">
-          <video controls autoplay muted playsinline width="700" height="500">
-            <source src="vid4.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <textarea readonly> A green snake glided through the grass, its scales shining like emerald glass. Nearby, a cat watched, tail twitching with playful curiosity. Instead of fear or fight,the snake swayed gently, and the cat pawed at the air. For a brief, golden moment, the green snake was playing with the cat—a strange, tender dance of nature’s opposites.</textarea>
-      </div>
-
+    <!-- Two-button switcher -->
+    <div class="switcher" role="tablist" aria-label="Media switcher">
+      <button id="btn-images" role="tab" aria-controls="section-images" aria-pressed="true">Images</button>
+      <button id="btn-videos" role="tab" aria-controls="section-videos" aria-pressed="false">Videos</button>
     </div>
-  </div>
+
+    <!-- IMAGES -->
+    <section id="section-images" class="reveal" role="tabpanel" aria-labelledby="btn-images">
+      <div class="deck">
+        <!-- Image 1 -->
+
+        <div class="card">
+          <label>Phoenix of the City</label>
+          <div class="media-frame">
+            <img src="AI_Dragon.png" alt="AI Image 1">
+          </div>
+          <textarea readonly>A futuristic skyline where skyscrapers form the wings of a massive phoenix rising from neon clouds. Sparks and embers trail behind as it soars through the night. The blend of metallic and fire textures creates a surreal, empowering vision.</textarea>
+        </div>
+
+         <!-- Image 3 -->
+        <div class="card">
+          <label>The Whispering Tree</label>
+          <div class="media-frame">
+            <img src="AI_Moon.png" alt="AI Image 3">
+          </div>
+          <textarea readonly>An ancient tree in a moonlit forest, its leaves glowing like tiny lanterns. Faces of ancestors faintly visible in the bark, whispering through the wind. Fireflies dance around the roots, and a gentle stream mirrors the stars above.</textarea>
+        </div>
+
+        <div class="card">
+          <label>Candy-Coated Fashion</label>
+          <div class="media-frame">
+            <img src="AI_Cho.png" alt="AI Image 1">
+          </div>
+          <textarea readonly>A coat designed entirely as a colorful small small circle gems chocolate. The scarf blend seamlessly into the chocolate white design, creating a playful mix of food and fashion. The bar of chocolate coat  rests on a retro diner checkered table with extra white bars of chocolate around. Hyper-realistic, vibrant colors, whimsical and surreal colors </textarea>
+        </div>
+
+        <div class="card">
+          <label>Anthropomorphic cat vlogging</label>
+          <div class="media-frame">
+            <img src="AI_Cat.png" alt="AI Image 1">
+          </div>
+          <textarea readonly>A cute, anthropomorphic cat vlogging in modern India. The cat stands on two legs up on the longest building and showing enteir world, wearing trendy sunglasses and a small backpack, holding a selfie stick with a smartphone attached. The background features iconic elements of modern Indian architecture — high-rise buildings, metro tracks, glass offices, and a touch of cultural vibrancy like street art, auto rickshaws, or subtle temple domes in the distance. The lighting is bright and contemporary, giving a cinematic city-vlog feel. The overall mood is fun, energetic, and stylish — a perfect blend of tradition and modernity.</textarea>
+        </div>
+
+        <!-- Image 2 -->
+        <div class="card">
+          <label>Colorful Aircraft</label>
+          <div class="media-frame">
+            <img src="AI_plane.png" alt="AI Image 2">
+          </div>
+          <textarea readonly>The texture of the colorful flowers is detailed and lifelike, with sunlight casting smooth highlights and soft shadows across the surface. The plane is mid-air, with realistic sky and clouds in the background — vibrant blue sky, scattered cumulus clouds below. The scene is cinematic and whimsical, blending realism with surreal charm. The airplane windows and engines are still visible, contrasting subtly with the furry exterior.</textarea>
+        </div>
+
+        <!-- Image 3 -->
+        <div class="card">
+          <label>Forest Dream House</label>
+          <div class="media-frame">
+            <img src="AI_img3.png" alt="AI Image 3">
+          </div>
+          <textarea readonly>A dream home in the BC Canada forests with a creek next to it, a loft-style house with floor-to-ceiling windows in the front and shaped like a geodesic dome with skylights. Near the home add some birds and animals.</textarea>
+        </div>
+
+            <div class="card">
+        <label>AI Cover Page</label>
+        <div class="media-frame">
+          <img src="The end Of the Story.png" alt="AI Image 3">
+        </div>
+        <textarea readonly>A moment of grace and awakening — the boy stands beneath heaven’s light as faith rises with the doves, marking the end of one story and the dawn of another.
+        </textarea> 
+      </div>
+
+       <div class="card">
+        <label>Wings of Time</label>
+        <div class="media-frame">
+          <img src="AI_Time.png" alt="AI Image 3">
+        </div>
+        <textarea readonly>An old pocket watch opening mid-air, releasing thousands of tiny butterflies instead of gears. The wings shimmer in hues of gold and silver, dissolving into dust as they drift into the sunset.
+        </textarea> 
+      </div>
+
+      <div class="card">
+            <label>NailArt - Cartoon Design </label>
+            <div class="media-frame">
+              <img src="AI_NaiArt.png" alt="AI Image 3">
+            </div>
+            <textarea readonly>A close-up of a hand with long, manicured nails featuring five different cartoon-themed designs, each nail showing a unique and colorful character. The style is bright, cheerful, and playful, inspired by modern 3D cartoon aesthetics.
+          </textarea> 
+            </div>
+
+            <div class="card">
+            <label>Butterfly Case </label>
+            <div class="media-frame">
+              <img src="AI_PhoneCase.png" alt="AI Image 3">
+            </div>
+            <textarea readonly>A highly detailed, realistic render of an iPhone 17 Pro Max featuring a butterfly-themed phone case. The case is adorned with colorful butterfly wings extending slightly from the sides, creating a graceful, airy appearance. The wings shimmer with iridescent hues of blue, pink, and violet, resembling real butterfly patterns with soft gradients and delicate veins. The phone’s metallic body subtly reflects ambient light, emphasizing its sleek, futuristic design. The background is minimal and elegant — softly blurred or white studio lighting — to highlight the phone and its ethereal, nature-inspired case. The overall mood is luxurious, creative, and dreamlike, blending cutting-edge technology with artistic beauty.</textarea> 
+            </div>
+
+      </div>
+    </section>
+
+    <!-- VIDEOS -->
+    <section id="section-videos" role="tabpanel" aria-labelledby="btn-videos" hidden>
+      <div class="deck">
+        <!-- Video 1 -->
+        <div class="card">
+          <label>Cat Playing In CornField</label>
+          <div class="media-frame">
+            <video controls autoplay muted playsinline>
+              <source src="vid1.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <textarea readonly>A playful orange tabby cat sitting in a cornfield. It plays with corn kernels on a wooden table, while behind it, the farmhouse and tall corn stalks create a rustic, peaceful scene.</textarea>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="card">
+          <label>Attacting Office</label>
+          <div class="media-frame">
+            <video controls autoplay muted playsinline>
+              <source src="vid2.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <textarea readonly>Star Wars style stormtroopers invading a modern office, pastel theme.</textarea>
+        </div>
+
+        <!-- Video 3 -->
+        <div class="card">
+          <label>Blooming Nature</label>
+          <div class="media-frame">
+            <video controls autoplay muted playsinline>
+              <source src="vid3.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <textarea readonly>Star Wars–style stormtroopers invade a sleek modern office, bathed in soft pastel hues of pink, blue, and mint. Their white armor gleams against the minimalist décor — glass desks, glowing screens, and stylish chairs. The troopers move with purpose as stunned office workers watch.</textarea>
+        </div>
+
+        <!-- Video 4 -->
+        <div class="card">
+          <label>Orange Tabby Cat Playing with Green Snake</label>
+          <div class="media-frame">
+            <video controls autoplay muted playsinline>
+              <source src="vid4.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <textarea readonly>A green snake glided through the grass… For a brief, golden moment, the green snake was playing with the cat—a strange, tender dance of nature’s opposites.</textarea>
+        </div>
+        
+         <!-- Video 4 -->
+        <div class="card">
+          <label>Canva Story - The Giant and the Boy</label>
+          <div class="media-frame">
+            <video controls autoplay muted playsinline>
+              <source src="Video - “The Boy and the Giant”.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <textarea readonly>Pixar-style 3D cinematic showdown — David, small but unshaken, faces the towering Goliath. Goliath’s armor blazes in the sun; his sneer drips with arrogance. The sky behind them splits between storm clouds and warm light, symbolizing good versus evil. Dust swirls at their feet as both armies watch in silent awe.</textarea>
+        </div>
+
+           <!-- Video 4 -->
+        <div class="card">
+          <label>Canva advertise Ice-cream of magnum</label>
+          <div class="media-frame">
+            <video controls autoplay muted playsinline>
+              <source src="Ice Cream - Video.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <textarea readonly>Smooth Belgian chocolate, rich vanilla cream, and that unmistakable crack — the taste that makes time stop.
+          Because some pleasures are meant to be savored, not rushed.</textarea>
+        </div>
+
+         <!-- Video 4 -->
+        <div class="card">
+          <label>Canva Anime - Running Boy</label>
+          <div class="media-frame">
+            <video controls autoplay muted playsinline>
+              <source src="Anime.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <textarea readonly>Every step begins the same — one foot before the other.In the quiet park, the air still cool, the world feels wide and kind.
+          He runs not from something, but toward everything waiting ahead.</textarea>
+        </div>
+        
+        <!-- Video 4 -->
+        <div class="card">
+          <label>Color Explosion</label>
+          <div class="media-frame">
+            <video controls autoplay muted playsinline>
+              <source src="Color Explosion.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <textarea readonly>A dull gray room suddenly bursts into a rainbow explosion — walls ripple like liquid paint, objects transform into glowing shapes, and a shocked figure smiles as color floods the scene.
+          Style: vivid, surreal, quick transformation.</textarea>
+        </div>
+      </div>
+          
+    </section>
+  </main>
+  <!-- Floating Back Button -->
+        <a href="index.html" class="float-back">← Back</a> 
+
+<script>
+  // Simple, classic tab switcher
+  const btnImages = document.getElementById('btn-images');
+  const btnVideos = document.getElementById('btn-videos');
+  const secImages = document.getElementById('section-images');
+  const secVideos = document.getElementById('section-videos');
+
+  function show(which){
+    const showImages = which === 'images';
+    btnImages.setAttribute('aria-pressed', showImages);
+    btnVideos.setAttribute('aria-pressed', !showImages);
+    if (showImages){
+      secImages.hidden = false; secImages.classList.add('reveal');
+      secVideos.hidden = true;  secVideos.classList.remove('reveal');
+    } else {
+      secVideos.hidden = false; secVideos.classList.add('reveal');
+      secImages.hidden = true;  secImages.classList.remove('reveal');
+    }
+  }
+  btnImages.addEventListener('click', () => show('images'));
+  btnVideos.addEventListener('click', () => show('videos'));
+
+  // Respect #videos or #images in URL
+  if (location.hash === '#videos') show('videos');
+
+  
+</script>
 </body>
 </html>
